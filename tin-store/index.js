@@ -58,7 +58,7 @@ ipcMain.handle("search-package", async (event, packageName) => {
               "N/A",
             publisher: data.Publisher,
             version: data.PackageVersion,
-            description: data.Description,
+            description: data.ShortDescription,
             homepage: data.Homepage,
           };
 

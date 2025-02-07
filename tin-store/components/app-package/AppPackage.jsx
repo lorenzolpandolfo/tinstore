@@ -1,5 +1,8 @@
 import "./app-package.css";
-import CONSTANTS from "../../utils/constants.js";
+
+const MESSAGE_NO_INFORMATION = "No information";
+const MESSAGE_NO_PUBLISHER = "Unknown publisher";
+const MESSAGE_NO_DESCRIPTION = "No description provided.";
 
 export default function AppPackage(
   packageName,
@@ -9,13 +12,19 @@ export default function AppPackage(
   description,
   homepage
 ) {
-  const title = packageName + " " + version;
+  const fmt_packageName = packageName || MESSAGE_NO_INFORMATION;
+  const fmt_version = version || MESSAGE_NO_INFORMATION;
+  const fmt_publisher = publisher || MESSAGE_NO_PUBLISHER;
+  const fmt_description = description || MESSAGE_NO_DESCRIPTION;
 
   return (
     <div className="app-package">
-      <span className="app-package-title">{title}</span>
-      <span className="app-package-publisher">{publisher}</span>
-      <span className="app-package-content">{description}</span>
+      <div className="app-package-top">
+        <span className="app-package-title">{fmt_packageName}</span>
+        <span className="app-package-publisher"> {fmt_version}</span>
+      </div>
+      <span className="app-package-publisher">{fmt_publisher}</span>
+      <span className="app-package-content">{fmt_description}</span>
       <span className="app-package-content">{id}</span>
     </div>
   );
