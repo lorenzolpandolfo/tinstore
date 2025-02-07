@@ -8,9 +8,11 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "electron ."  
-},
+    "start": "electron ."
+  },
   "dependencies": {
+    "axios": "^1.7.9",
+    "js-yaml": "^4.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

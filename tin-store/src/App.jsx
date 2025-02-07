@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 
+import AppPackage from "../components/app-package/AppPackage.jsx";
+
 const App = () => {
   const [packageName, setPackageName] = useState("");
   const [results, setResults] = useState([]);
@@ -9,7 +11,7 @@ const App = () => {
 
   const handleSearch = async () => {
     if (!packageName) {
-      alert("Please enter a package name.");
+      alert("Please enter a package name");
       return;
     }
 
@@ -18,10 +20,7 @@ const App = () => {
     setResults([]);
 
     try {
-      const packageData = await ipcRenderer.invoke(
-        "search-package",
-        packageName
-      );
+      const packageData = await window.electron.invoke(packageName);
       setLoading(false);
 
       if (packageData.error) {
@@ -51,7 +50,6 @@ const App = () => {
           id="package-name"
           value={packageName}
           onChange={(e) => setPackageName(e.target.value)}
-          placeholder="Enter package name"
         />
       </div>
       <button
@@ -67,43 +65,18 @@ const App = () => {
 
       <div>
         {results.map((result, index) => (
-          <div
-            key={index}
-            style={{
-              marginTop: "20px",
-              padding: "10px",
-              border: "1px solid #ddd",
-              borderRadius: "4px",
-              background: "#f9f9f9",
-            }}
-          >
+          <div key={index} className="app-container">
             {result.message ? (
               <p>{result.message}</p>
             ) : (
-              <>
-                <h3>
-                  {result.packageName} ({result.version})
-                </h3>
-                <p>
-                  <strong>Package ID:</strong> {result.packageId}
-                </p>
-                <p>
-                  <strong>Publisher:</strong> {result.publisher}
-                </p>
-                <p>
-                  <strong>Description:</strong> {result.description}
-                </p>
-                <p>
-                  <strong>Homepage:</strong>{" "}
-                  <a
-                    href={result.homepage}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {result.homepage}
-                  </a>
-                </p>
-              </>
+              AppPackage(
+                result.packageName,
+                result.version,
+                result.id,
+                result.publisher,
+                result.description,
+                result.homepage
+              )
             )}
           </div>
         ))}
