@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AppPackage from "../app-package/AppPackage.jsx";
-import "./search-bar.css";
+import "../search-bar/search-bar.css";
 
 export default function SearchBar() {
   const [packageName, setPackageName] = useState("");
@@ -39,25 +39,26 @@ export default function SearchBar() {
     }
   };
 
+  const handleTyping = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="search">
       <div className="package-search">
         <input
-        className="package-search-input"
+          className="package-search-input"
           type="text"
           name="package-name"
           id="package-name"
           value={packageName}
           onChange={(e) => setPackageName(e.target.value)}
+          onKeyDown={handleTyping}
+          placeholder="Search applications..."
         />
       </div>
-      <button
-        type="submit"
-        onClick={handleSearch}
-        onChange={(e) => setPackageName(e.target.value)}
-      >
-        Search
-      </button>
 
       {loading && <p>Searching...</p>}
 
@@ -72,7 +73,7 @@ export default function SearchBar() {
               AppPackage(
                 result.packageName,
                 result.version,
-                result.id,
+                result.packageId,
                 result.publisher,
                 result.description,
                 result.homepage

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, Menu } from "electron";
 import path from "path";
 import GITHUB_TOKEN from "./secret.js";
 import axios from "axios";
@@ -16,6 +16,9 @@ const createWindow = () => {
   });
 
   win.loadURL("http://localhost:5173/");
+
+  // adicionar em alguma versao 1.0.0
+  // Menu.setApplicationMenu(null);
 };
 
 app.whenReady().then(() => {

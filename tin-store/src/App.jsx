@@ -1,6 +1,6 @@
 import "./App.css";
 
-import SearchBar from "../components/search-bar/SearchBar.jsx";
+import SearchBar from "../src/components/search-bar/SearchBar.jsx";
 
 const App = () => {
 

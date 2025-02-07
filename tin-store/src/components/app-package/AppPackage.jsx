@@ -1,4 +1,4 @@
-import "./app-package.css";
+import "../app-package/app-package.css";
 
 const MESSAGE_NO_INFORMATION = "No information";
 const MESSAGE_NO_PUBLISHER = "Unknown publisher";
@@ -17,15 +17,28 @@ export default function AppPackage(
   const fmt_publisher = publisher || MESSAGE_NO_PUBLISHER;
   const fmt_description = description || MESSAGE_NO_DESCRIPTION;
 
+  const handlePackageInstall = async () => {
+    console.log("instalar pacote: ", id)
+  }
+
   return (
     <div className="app-package">
       <div className="app-package-top">
         <span className="app-package-title">{fmt_packageName}</span>
         <span className="app-package-publisher"> {fmt_version}</span>
       </div>
-      <span className="app-package-publisher">{fmt_publisher}</span>
-      <span className="app-package-content">{fmt_description}</span>
-      <span className="app-package-content">{id}</span>
+      <div className="app-package-bottom">
+        <div className="app-package-details">
+          <span className="app-package-publisher">{fmt_publisher}</span>
+          <span className="app-package-content">{fmt_description}</span>
+        </div>
+        <span
+          className="app-package-install"
+          onClick={() => handlePackageInstall()}
+        >
+          Install
+        </span>
+      </div>
     </div>
   );
 }
