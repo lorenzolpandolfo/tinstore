@@ -1,10 +1,13 @@
-import { app, BrowserWindow, ipcMain, Menu } from "electron";
-import path from "path";
-import GITHUB_TOKEN from "./secret.js";
+import { app, BrowserWindow, dialog, ipcMain, Menu } from "electron";
+import { exec } from "child_process";
+
 import axios from "axios";
 import yaml from "js-yaml";
+import path from "path";
 
+import GITHUB_TOKEN from "./secret.js";
 import compareVersions from "./utils/compareVersions.js";
+import { type } from "os";
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -96,4 +99,22 @@ ipcMain.handle("search-package", async (event, packageName) => {
   } catch (error) {
     return { error: `Failed to search package: ${error.message}` };
   }
+});
+
+ipcMain.on("run-command", (event, command) => {
+  exec(command, (error, stdout, stderr) => {
+    
+    if (error) {
+      dialog.showMessageBox({type: 'error', title: "Installation error", message: error.message});
+      event.reply("command-result", `Error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      dialog.showMessageBox({type: 'error', title: "Installation error", message: stderr});
+      event.reply("command-result", `Stderr: ${stderr}`);
+      return;
+    }
+    dialog.showMessageBox({type: 'info', title: "Installation complete", message: "The installation process was successful"});
+    event.reply("command-result", stdout);
+  });
 });

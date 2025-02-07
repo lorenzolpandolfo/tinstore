@@ -18,8 +18,10 @@ export default function AppPackage(
   const fmt_description = description || MESSAGE_NO_DESCRIPTION;
 
   const handlePackageInstall = async () => {
-    console.log("instalar pacote: ", id)
-  }
+    alert(packageName + " will be installed.");
+    window.electron.runCommand("winget install " + id);
+    console.warn;
+  };
 
   return (
     <div className="app-package">
