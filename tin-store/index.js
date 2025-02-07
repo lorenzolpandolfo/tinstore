@@ -4,6 +4,8 @@ import GITHUB_TOKEN from "./secret.js";
 import axios from "axios";
 import yaml from "js-yaml";
 
+import compareVersions from "./utils/compareVersions.js";
+
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
@@ -20,6 +22,8 @@ app.whenReady().then(() => {
   createWindow();
 });
 
+const packageCache = new Map();
+
 ipcMain.handle("search-package", async (event, packageName) => {
   console.log("[-] Searching for", packageName);
 
@@ -33,37 +37,58 @@ ipcMain.handle("search-package", async (event, packageName) => {
 
       if (!results.length) return { message: "No packages found." };
 
-      const sortedResults = results.sort((a, b) => {
-        const isVersionA = a.path.includes("version.yaml");
-        const isVersionB = b.path.includes("version.yaml");
-        return isVersionA === isVersionB ? 0 : isVersionA ? -1 : 1;
-      });
+      const packageDataPromises = results.map(async (item) => {
+        if (packageCache.has(item.url)) {
+          return packageCache.get(item.url);
+        }
 
-      const packageData = [];
-      for (const item of sortedResults) {
-        if (
-          item.path.includes(".validation") ||
-          item.path.includes(".installer")
-        )
-          continue;
         const yamlUrl = item.html_url
           .replace("github.com", "raw.githubusercontent.com")
           .replace("/blob/", "/");
-        const yamlResponse = await axios.get(yamlUrl, { headers });
-        const data = yaml.load(yamlResponse.data);
-        packageData.push({
-          packageId: data.PackageIdentifier,
-          packageName:
-            data.PackageName ||
-            data.PackageIdentifier.split(".").join(" ") ||
-            "N/A",
-          publisher: data.Publisher,
-          version: data.PackageVersion,
-          description: data.Description,
-          homepage: data.Homepage,
-        });
-      }
-      return packageData;
+
+        try {
+          const yamlResponse = await axios.get(yamlUrl, { headers });
+          const data = yaml.load(yamlResponse.data);
+
+          const packageInfo = {
+            packageId: data.PackageIdentifier,
+            packageName:
+              data.PackageName ||
+              data.PackageIdentifier.split(".").join(" ") ||
+              "N/A",
+            publisher: data.Publisher,
+            version: data.PackageVersion,
+            description: data.Description,
+            homepage: data.Homepage,
+          };
+
+          packageCache.set(item.url, packageInfo);
+
+          return packageInfo;
+        } catch (error) {
+          console.error(`Error loading YAML from ${yamlUrl}: ${error.message}`);
+          return null;
+        }
+      });
+
+      const packageData = (await Promise.all(packageDataPromises)).filter(
+        Boolean
+      );
+
+      const seenPackages = new Map();
+
+      packageData.forEach((pkg) => {
+        if (!seenPackages.has(pkg.packageName)) {
+          seenPackages.set(pkg.packageName, pkg);
+        } else {
+          const existingPackage = seenPackages.get(pkg.packageName);
+          if (compareVersions(pkg.version, existingPackage.version) > 0) {
+            seenPackages.set(pkg.packageName, pkg);
+          }
+        }
+      });
+
+      return Array.from(seenPackages.values());
     }
   } catch (error) {
     return { error: `Failed to search package: ${error.message}` };
