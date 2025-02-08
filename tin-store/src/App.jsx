@@ -1,5 +1,3 @@
-import "./App.css";
-
 import SearchBar from "../src/components/search-bar/SearchBar.jsx";
 
 const App = () => {

@@ -34,6 +34,8 @@ export default function AppPackage(
           <span className="app-package-publisher">{fmt_publisher}</span>
           <span className="app-package-content">{fmt_description}</span>
         </div>
+      </div>
+      <div className="app-buttons">
         <span
           className="app-package-install"
           onClick={() => handlePackageInstall()}

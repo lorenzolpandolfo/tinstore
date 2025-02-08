@@ -4,12 +4,13 @@
 
     input {
         padding: 10px;
-        margin: 10px 0;
+        margin: 15px 0;
         border-radius: 5px;
         background: linear-gradient(135deg, #b17e9c, #5d588f);
         font-size: 18px;
         font-weight: 600;
         color: white;
+        height: 45px;
         width: 600px;
     }
 
