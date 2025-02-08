@@ -22,7 +22,7 @@ export default function AppPackage(
 
   const handlePackageInstall = async () => {
     alert(packageName + " will be installed.");
-    window.electron.runCommand("winget install " + id);
+    window.electron.runCommand("winget install " + id, packageName);
   };
 
   const normalizeString = (str) => {

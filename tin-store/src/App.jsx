@@ -4,11 +4,12 @@ import InstallModal from "./components/install-modal/InstallModal.jsx";
 
 const App = () => {
   const [status, setStatus] = useState(false)
+  const [packageName, setPackageName] = useState("")
 
   useEffect(() => {
-    const handleInstallationStatusChange = (event, message) => {
-      console.log("Status da instalação alterado:", message);
-      setStatus(message);
+    const handleInstallationStatusChange = (event, isInstalling, packageName) => {
+      setStatus(isInstalling);
+      setPackageName(packageName);
     };
 
     window.electron.onInstallationStatusChange(handleInstallationStatusChange);
@@ -22,7 +23,7 @@ const App = () => {
 
   return <>
     <SearchBar />
-    {status && <InstallModal />}
+    {!status && <InstallModal packageName={packageName} />}
   </>;
 };
 

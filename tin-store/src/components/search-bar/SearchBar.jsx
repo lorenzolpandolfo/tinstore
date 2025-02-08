@@ -71,7 +71,7 @@ export default function SearchBar() {
             const bHasAllFields = b.description && b.publisher;
 
             if (aHasAllFields === bHasAllFields) return 0;
-            
+
             return aHasAllFields ? -1 : 1;
           })
           .map((result, index) => (

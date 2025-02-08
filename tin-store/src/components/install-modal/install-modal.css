@@ -1,17 +1,33 @@
 
 .install-modal {
-    padding: 8px;
-    background-color: #ad7c9b;
-    font-size: 16px;
-    color: var(--primary-font-color);
-    font-weight: 600;
+    background-color: var(--tertiary-background-color);
     border-radius: 10px;
     position: fixed;
-    bottom: 0;
-    margin-bottom: 15px;
+    top: 0;
+    left: 0;
+    margin: 10px;
     border: 2px solid white;
 
-    span {
-        cursor:default;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+}
+
+.install-modal img {
+    animation: float 1.5s ease-in-out infinite;
+  }
+  
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+    100% {
+        transform: translateY(0);
     }
 }

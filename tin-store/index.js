@@ -35,8 +35,6 @@ app.whenReady().then(() => {
 const packageCache = new Map();
 
 ipcMain.handle("search-package", async (event, packageName) => {
-  console.log("[-] Searching for", packageName);
-
   try {
     const url = `https://api.github.com/search/code?q=${packageName}+extension:yaml+repo:microsoft/winget-pkgs`;
     const headers = { Authorization: `token ${GITHUB_TOKEN}` };
@@ -69,7 +67,6 @@ ipcMain.handle("search-package", async (event, packageName) => {
             publisher: data.Publisher,
             version: data.PackageVersion,
             description: data.ShortDescription,
-            homepage: data.Homepage,
             publisherUrl: data.PublisherUrl,
             packageUrl: data.PackageUrl,
           };
@@ -107,12 +104,12 @@ ipcMain.handle("search-package", async (event, packageName) => {
   }
 });
 
-ipcMain.on("run-command", (event, command) => {
-  event.sender.send("installation-status-change", true);
+ipcMain.on("run-command", (event, command, packageName) => {
+  event.sender.send("installation-status-change", true, packageName);
 
   exec(command, (error, stdout, stderr) => {
     if (error || stderr) {
-      event.sender.send("installation-status-change", false);
+      event.sender.send("installation-status-change", false, packageName);
     }
 
     if (error) {
@@ -135,7 +132,7 @@ ipcMain.on("run-command", (event, command) => {
       return;
     }
 
-    event.sender.send("installation-status-change", false);
+    event.sender.send("installation-status-change", false, packageName);
     dialog.showMessageBox({
       type: "info",
       title: "Installation complete",
