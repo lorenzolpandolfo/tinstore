@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, Menu, shell } from "electron";
 import { exec } from "child_process";
 
 import axios from "axios";
@@ -22,6 +22,11 @@ const createWindow = () => {
 
   // adicionar em alguma versao 1.0.0
   // Menu.setApplicationMenu(null);
+
+  win.webContents.setWindowOpenHandler((details) => {
+    shell.openExternal(details.url); // Open URL in user's browser.
+    return { action: "deny" }; // Prevent the app from opening the URL.
+  })
 };
 
 app.whenReady().then(() => {
@@ -66,6 +71,8 @@ ipcMain.handle("search-package", async (event, packageName) => {
             version: data.PackageVersion,
             description: data.ShortDescription,
             homepage: data.Homepage,
+            publisherUrl: data.PublisherUrl,
+            packageUrl: data.PackageUrl,
           };
 
           packageCache.set(item.url, packageInfo);

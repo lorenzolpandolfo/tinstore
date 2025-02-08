@@ -76,7 +76,8 @@ export default function SearchBar() {
                 result.packageId,
                 result.publisher,
                 result.description,
-                result.homepage
+                result.publisherUrl,
+                result.packageUrl
               )
             )}
           </div>

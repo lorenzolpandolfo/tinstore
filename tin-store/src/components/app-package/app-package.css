@@ -21,6 +21,8 @@
 .app-package-title {
     font-weight: 600;
     font-size: 20px;
+    color: var(--primary-font-color);
+    text-decoration: none;
 }
 
 .app-package-top {
