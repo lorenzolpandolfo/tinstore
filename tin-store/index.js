@@ -7,7 +7,6 @@ import path from "path";
 
 import GITHUB_TOKEN from "./secret.js";
 import compareVersions from "./utils/compareVersions.js";
-import { type } from "os";
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -26,7 +25,7 @@ const createWindow = () => {
   win.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url);
     return { action: "deny" };
-  })
+  });
 };
 
 app.whenReady().then(() => {
@@ -109,19 +108,39 @@ ipcMain.handle("search-package", async (event, packageName) => {
 });
 
 ipcMain.on("run-command", (event, command) => {
+  event.sender.send("installation-status-change", true);
+
   exec(command, (error, stdout, stderr) => {
-    
+    if (error || stderr) {
+      event.sender.send("installation-status-change", false);
+    }
+
     if (error) {
-      dialog.showMessageBox({type: 'error', title: "Installation error", message: error.message});
+      dialog.showMessageBox({
+        type: "error",
+        title: "Installation error",
+        message: error.message,
+      });
       event.reply("command-result", `Error: ${error.message}`);
       return;
     }
+
     if (stderr) {
-      dialog.showMessageBox({type: 'error', title: "Installation error", message: stderr});
+      dialog.showMessageBox({
+        type: "error",
+        title: "Installation error",
+        message: stderr,
+      });
       event.reply("command-result", `Stderr: ${stderr}`);
       return;
     }
-    dialog.showMessageBox({type: 'info', title: "Installation complete", message: "The installation process was successful"});
+
+    event.sender.send("installation-finished");
+    dialog.showMessageBox({
+      type: "info",
+      title: "Installation complete",
+      message: "The installation process was successful",
+    });
     event.reply("command-result", stdout);
   });
 });

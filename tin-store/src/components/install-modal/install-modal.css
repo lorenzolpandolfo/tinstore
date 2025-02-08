@@ -1,0 +1,17 @@
+
+.install-modal {
+    padding: 8px;
+    background-color: #ad7c9b;
+    font-size: 16px;
+    color: var(--primary-font-color);
+    font-weight: 600;
+    border-radius: 10px;
+    position: fixed;
+    bottom: 0;
+    margin-bottom: 15px;
+    border: 2px solid white;
+
+    span {
+        cursor:default;
+    }
+}

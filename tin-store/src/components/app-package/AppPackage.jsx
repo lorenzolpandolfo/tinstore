@@ -23,7 +23,6 @@ export default function AppPackage(
   const handlePackageInstall = async () => {
     alert(packageName + " will be installed.");
     window.electron.runCommand("winget install " + id);
-    console.warn;
   };
 
   const normalizeString = (str) => {
@@ -41,7 +40,7 @@ export default function AppPackage(
   const lowerPackageName = normalizeString(fmt_packageName);
   
   const packageNameParts = lowerPackageName.split(" ");
-  
+
   const isVerified = packageNameParts.some(part => 
     (lowerPackageUrl && lowerPackageUrl.includes(part)) ||
     (lowerPublisherUrl && lowerPublisherUrl.includes(part))
