@@ -23,7 +23,7 @@ const App = () => {
 
   return <>
     <SearchBar />
-    {!status && <InstallModal packageName={packageName} />}
+    {status && <InstallModal packageName={packageName} />}
   </>;
 };
 
