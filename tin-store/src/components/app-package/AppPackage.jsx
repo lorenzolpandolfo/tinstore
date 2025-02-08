@@ -39,9 +39,13 @@ export default function AppPackage(
   const lowerPackageUrl = normalizeString(packageUrl);
   const lowerPublisherUrl = normalizeString(publisherUrl);
   const lowerPackageName = normalizeString(fmt_packageName);
-
-  const isVerified = (lowerPackageUrl && lowerPackageUrl.includes(lowerPackageName)) ||
-  (lowerPublisherUrl && lowerPublisherUrl.includes(lowerPackageName))
+  
+  const packageNameParts = lowerPackageName.split(" ");
+  
+  const isVerified = packageNameParts.some(part => 
+    (lowerPackageUrl && lowerPackageUrl.includes(part)) ||
+    (lowerPublisherUrl && lowerPublisherUrl.includes(part))
+  );
 
   return (
     <div className="app-package">

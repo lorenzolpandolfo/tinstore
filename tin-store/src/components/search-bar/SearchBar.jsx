@@ -19,7 +19,7 @@ export default function SearchBar() {
     setResults([]);
 
     try {
-      const packageData = await window.electron.invoke(packageName);
+      const packageData = await window.electron.searchPackage(packageName);
       setLoading(false);
 
       if (packageData.error) {
@@ -65,23 +65,32 @@ export default function SearchBar() {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <div>
-        {results.map((result, index) => (
-          <div key={index} className="app-container">
-            {result.message ? (
-              <p>{result.message}</p>
-            ) : (
-              AppPackage(
-                result.packageName,
-                result.version,
-                result.packageId,
-                result.publisher,
-                result.description,
-                result.publisherUrl,
-                result.packageUrl
-              )
-            )}
-          </div>
-        ))}
+        {results
+          .sort((a, b) => {
+            const aHasAllFields = a.description && a.publisher;
+            const bHasAllFields = b.description && b.publisher;
+
+            if (aHasAllFields === bHasAllFields) return 0;
+            
+            return aHasAllFields ? -1 : 1;
+          })
+          .map((result, index) => (
+            <div key={index} className="app-container">
+              {result.message ? (
+                <p>{result.message}</p>
+              ) : (
+                AppPackage(
+                  result.packageName,
+                  result.version,
+                  result.packageId,
+                  result.publisher,
+                  result.description,
+                  result.publisherUrl,
+                  result.packageUrl
+                )
+              )}
+            </div>
+          ))}
       </div>
     </div>
   );

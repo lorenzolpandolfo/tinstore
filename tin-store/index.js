@@ -24,8 +24,8 @@ const createWindow = () => {
   // Menu.setApplicationMenu(null);
 
   win.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url); // Open URL in user's browser.
-    return { action: "deny" }; // Prevent the app from opening the URL.
+    shell.openExternal(details.url);
+    return { action: "deny" };
   })
 };
 
