@@ -135,7 +135,7 @@ ipcMain.on("run-command", (event, command) => {
       return;
     }
 
-    event.sender.send("installation-finished");
+    event.sender.send("installation-status-change", false);
     dialog.showMessageBox({
       type: "info",
       title: "Installation complete",

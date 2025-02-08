@@ -1,13 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "../src/components/search-bar/SearchBar.jsx";
 import InstallModal from "./components/install-modal/InstallModal.jsx";
 
-let installationStatus = false;
-
 const App = () => {
+  const [status, setStatus] = useState(false)
+
   useEffect(() => {
     const handleInstallationStatusChange = (event, message) => {
       console.log("Status da instalação alterado:", message);
+      setStatus(message);
     };
 
     window.electron.onInstallationStatusChange(handleInstallationStatusChange);
@@ -21,7 +22,7 @@ const App = () => {
 
   return <>
     <SearchBar />
-    {installationStatus && <InstallModal />}
+    {status && <InstallModal />}
   </>;
 };
 
