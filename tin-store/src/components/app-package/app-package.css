@@ -77,3 +77,7 @@
   justify-content: end;
   width: 100%;
 }
+
+.verified-app-check {
+  margin: 0 5px;
+}

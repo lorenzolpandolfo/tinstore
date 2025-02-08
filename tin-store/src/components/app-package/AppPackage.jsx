@@ -26,26 +26,67 @@ export default function AppPackage(
     console.warn;
   };
 
+  const normalizeString = (str) => {
+    if (!str) return '';
+    return str
+      .toLowerCase()
+      .trim()
+      .replace(/[-_]/g, " ")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  };
+  
+  const lowerPackageUrl = normalizeString(packageUrl);
+  const lowerPublisherUrl = normalizeString(publisherUrl);
+  const lowerPackageName = normalizeString(fmt_packageName);
+
+  const isVerified = (lowerPackageUrl && lowerPackageUrl.includes(lowerPackageName)) ||
+  (lowerPublisherUrl && lowerPublisherUrl.includes(lowerPackageName))
+
   return (
     <div className="app-package">
       <div className="app-package-top">
-        {packageUrl ? (
-          <a href={packageUrl} target="_blank" className="app-package-title">
-            {fmt_packageName}
-          </a>
-        ) : (
-          <span title={HINT_NO_EXTERNAL_REFERENCE} className="app-package-title">{fmt_packageName}</span>
-        )}
+        <div className="app-package-title">
+          {packageUrl ? (
+            <a href={packageUrl} target="_blank" className="app-package-title">
+              {fmt_packageName}
+            </a>
+          ) : (
+            <span
+              title={HINT_NO_EXTERNAL_REFERENCE}
+              className="app-package-title"
+            >
+              {fmt_packageName}
+            </span>
+          )}
+          {isVerified && (
+            <img
+              title="Official source"
+              className="verified-app-check"
+              alt="verified app check"
+              src="src/assets/check.svg"
+            />
+          )}
+        </div>
         <span className="app-package-publisher"> {fmt_version}</span>
       </div>
       <div className="app-package-bottom">
         <div className="app-package-details">
           {publisherUrl ? (
-            <a href={publisherUrl} target="_blank" className="app-package-publisher">
+            <a
+              href={publisherUrl}
+              target="_blank"
+              className="app-package-publisher"
+            >
               {fmt_publisher}
             </a>
           ) : (
-            <span title={HINT_NO_EXTERNAL_REFERENCE} className="app-package-publisher">{fmt_publisher}</span>
+            <span
+              title={HINT_NO_EXTERNAL_REFERENCE}
+              className="app-package-publisher"
+            >
+              {fmt_publisher}
+            </span>
           )}
           <span className="app-package-content">{fmt_description}</span>
         </div>
