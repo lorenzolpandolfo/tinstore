@@ -8,6 +8,8 @@ import path from "path";
 import GITHUB_TOKEN from "./secret.js";
 import compareVersions from "./utils/compareVersions.js";
 
+const linuxTesting = false;
+
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
@@ -108,31 +110,31 @@ ipcMain.on("run-command", (event, command, packageName) => {
   event.sender.send("installation-status-change", true, packageName);
 
   exec(command, (error, stdout, stderr) => {
-    if (error || stderr) {
+    if (!linuxTesting) {
+      if (error || stderr) {
+        event.sender.send("installation-status-change", false, packageName);
+      }
+      if (error) {
+        dialog.showMessageBox({
+          type: "error",
+          title: "Installation error",
+          message: error.message,
+        });
+        event.reply("command-result", `Error: ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        dialog.showMessageBox({
+          type: "error",
+          title: "Installation error",
+          message: stderr,
+        });
+        event.reply("command-result", `Stderr: ${stderr}`);
+        return;
+      }
       event.sender.send("installation-status-change", false, packageName);
     }
 
-    if (error) {
-      dialog.showMessageBox({
-        type: "error",
-        title: "Installation error",
-        message: error.message,
-      });
-      event.reply("command-result", `Error: ${error.message}`);
-      return;
-    }
-
-    if (stderr) {
-      dialog.showMessageBox({
-        type: "error",
-        title: "Installation error",
-        message: stderr,
-      });
-      event.reply("command-result", `Stderr: ${stderr}`);
-      return;
-    }
-
-    event.sender.send("installation-status-change", false, packageName);
     dialog.showMessageBox({
       type: "info",
       title: "Installation complete",

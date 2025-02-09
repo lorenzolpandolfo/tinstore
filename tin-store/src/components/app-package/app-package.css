@@ -71,6 +71,17 @@
   border-color: var(--primary-font-color);
 }
 
+.app-package-installing {
+  display: flex;
+  background-color: transparent;
+  margin-top: 10px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: default;
+}
+
 .app-buttons {
   display: flex;
   align-items: center;

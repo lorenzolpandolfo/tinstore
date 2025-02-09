@@ -6,15 +6,16 @@ const MESSAGE_NO_DESCRIPTION = "No description provided.";
 
 const HINT_NO_EXTERNAL_REFERENCE = "No external reference";
 
-export default function AppPackage(
+export default function AppPackage({
   packageName,
   version,
-  id,
+  packageId,
   publisher,
   description,
   publisherUrl,
-  packageUrl
-) {
+  packageUrl,
+  installStatus,
+}) {
   const fmt_packageName = packageName || MESSAGE_NO_INFORMATION;
   const fmt_version = version || MESSAGE_NO_INFORMATION;
   const fmt_publisher = publisher || MESSAGE_NO_PUBLISHER;
@@ -22,11 +23,11 @@ export default function AppPackage(
 
   const handlePackageInstall = async () => {
     alert(packageName + " will be installed.");
-    window.electron.runCommand("winget install " + id, packageName);
+    window.electron.runCommand("winget install " + packageId, packageName);
   };
 
   const normalizeString = (str) => {
-    if (!str) return '';
+    if (!str) return "";
     return str
       .toLowerCase()
       .trim()
@@ -34,16 +35,17 @@ export default function AppPackage(
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
   };
-  
+
   const lowerPackageUrl = normalizeString(packageUrl);
   const lowerPublisherUrl = normalizeString(publisherUrl);
   const lowerPackageName = normalizeString(fmt_packageName);
-  
+
   const packageNameParts = lowerPackageName.split(" ");
 
-  const isVerified = packageNameParts.some(part => 
-    (lowerPackageUrl && lowerPackageUrl.includes(part)) ||
-    (lowerPublisherUrl && lowerPublisherUrl.includes(part))
+  const isVerified = packageNameParts.some(
+    (part) =>
+      (lowerPackageUrl && lowerPackageUrl.includes(part)) ||
+      (lowerPublisherUrl && lowerPublisherUrl.includes(part))
   );
 
   return (
@@ -95,12 +97,17 @@ export default function AppPackage(
         </div>
       </div>
       <div className="app-buttons">
-        <span
-          className="app-package-install"
-          onClick={() => handlePackageInstall()}
-        >
-          Install
-        </span>
+        {!installStatus && (
+          <span
+            className="app-package-install"
+            onClick={() => handlePackageInstall()}
+          >
+            Install
+          </span>
+        )}
+        {installStatus && installStatus === "installing" && (
+          <span className="app-package-installing">Installing...</span>
+        )}
       </div>
     </div>
   );

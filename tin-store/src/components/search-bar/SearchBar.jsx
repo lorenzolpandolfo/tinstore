@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AppPackage from "../app-package/AppPackage.jsx";
 import "../search-bar/search-bar.css";
 
-export default function SearchBar() {
+export default function SearchBar({ packagesBeingInstalled }) {
   const [packageName, setPackageName] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -45,6 +45,63 @@ export default function SearchBar() {
     }
   };
 
+  const sortedResults = useMemo(() => {
+    const lowerCasePackageName = packageName.toLowerCase();
+
+    return [...results].sort((a, b) => {
+      const aPackageName = a.packageName?.toLowerCase() || "";
+      const bPackageName = b.packageName?.toLowerCase() || "";
+
+      const aMatches = aPackageName.includes(lowerCasePackageName);
+      const bMatches = bPackageName.includes(lowerCasePackageName);
+
+      const aHasAllFields = a.description && a.publisher;
+      const bHasAllFields = b.description && b.publisher;
+
+      if (
+        aPackageName === lowerCasePackageName &&
+        bPackageName !== lowerCasePackageName
+      )
+        return -1;
+      if (
+        bPackageName === lowerCasePackageName &&
+        aPackageName !== lowerCasePackageName
+      )
+        return 1;
+
+      if (aMatches !== bMatches) return aMatches ? -1 : 1;
+
+      if (aHasAllFields !== bHasAllFields) return aHasAllFields ? -1 : 1;
+
+      return 0;
+    });
+  }, [results, packagesBeingInstalled]);
+
+  const isPackageBeingInstalled = (pkg) => {
+    return packagesBeingInstalled.includes(pkg) ? "installing" : false;
+  };
+
+  const packagesList = useMemo(() => {
+    return sortedResults.map((result, index) => (
+      <div key={index} className="app-container">
+        {result.message ? (
+          <p>{result.message}</p>
+        ) : (
+          <AppPackage
+            packageName={result.packageName}
+            version={result.version}
+            packageId={result.packageId}
+            publisher={result.publisher}
+            description={result.description}
+            publisherUrl={result.publisherUrl}
+            packageUrl={result.packageUrl}
+            installStatus={isPackageBeingInstalled(result.packageName)}
+          />
+        )}
+      </div>
+    ));
+  }, [sortedResults, packagesBeingInstalled]);
+
   return (
     <div className="search">
       <div className="package-search">
@@ -64,34 +121,7 @@ export default function SearchBar() {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <div>
-        {results
-          .sort((a, b) => {
-            const aHasAllFields = a.description && a.publisher;
-            const bHasAllFields = b.description && b.publisher;
-
-            if (aHasAllFields === bHasAllFields) return 0;
-
-            return aHasAllFields ? -1 : 1;
-          })
-          .map((result, index) => (
-            <div key={index} className="app-container">
-              {result.message ? (
-                <p>{result.message}</p>
-              ) : (
-                AppPackage(
-                  result.packageName,
-                  result.version,
-                  result.packageId,
-                  result.publisher,
-                  result.description,
-                  result.publisherUrl,
-                  result.packageUrl
-                )
-              )}
-            </div>
-          ))}
-      </div>
+      <div>{packagesList}</div>
     </div>
   );
 }
