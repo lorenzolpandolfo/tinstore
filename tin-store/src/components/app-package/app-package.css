@@ -52,9 +52,8 @@
   transition: background-color 0.3s ease;
 }
 
-.app-package-install {
+.button {
   display: flex;
-  background-color: var(--primary-button-color);
   margin-top: 10px;
   padding: 5px 10px;
   border-radius: 10px;
@@ -64,11 +63,22 @@
   transition: border-color 0.225s;
   transition: transform 0.225s ease-in-out;
   cursor: pointer;
+  
 }
 
-.app-package-install:hover {
+.button:hover {
   transform: scale(1.1);
   border-color: var(--primary-font-color);
+}
+
+.app-package-install {
+  background-color: var(--primary-button-color);
+}
+
+.app-package-uninstall {
+  background-color: transparent;
+  border: 2px solid var(--primary-button-color);
+
 }
 
 .app-package-installing {

@@ -14,7 +14,8 @@ export default function AppPackage({
   description,
   publisherUrl,
   packageUrl,
-  installStatus,
+  installStatus: installing,
+  installed,
 }) {
   const fmt_packageName = packageName || MESSAGE_NO_INFORMATION;
   const fmt_version = version || MESSAGE_NO_INFORMATION;
@@ -24,6 +25,11 @@ export default function AppPackage({
   const handlePackageInstall = async () => {
     alert(packageName + " will be installed.");
     window.electron.runCommand("winget install " + packageId, packageName);
+  };
+
+  const handlePackageUninstall = async () => {
+    alert(packageName + " will be uninstalled.");
+    window.electron.runCommand("winget uninstall " + packageId, packageName);
   };
 
   const normalizeString = (str) => {
@@ -97,16 +103,24 @@ export default function AppPackage({
         </div>
       </div>
       <div className="app-buttons">
-        {!installStatus && (
+        {installed && (
+                    <span
+                    className="button app-package-uninstall"
+                    onClick={() => handlePackageUninstall()}
+                  >
+                    Uninstall
+                  </span>
+        )}
+        {!installed && installing && (
+          <span className="button app-package-installing">Installing...</span>
+        )}
+        {!installed && !installing && (
           <span
-            className="app-package-install"
+            className="button app-package-install"
             onClick={() => handlePackageInstall()}
           >
             Install
           </span>
-        )}
-        {installStatus && installStatus === "installing" && (
-          <span className="app-package-installing">Installing...</span>
         )}
       </div>
     </div>

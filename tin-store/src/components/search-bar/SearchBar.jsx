@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AppPackage from "../app-package/AppPackage.jsx";
 import "../search-bar/search-bar.css";
 
@@ -7,6 +7,7 @@ export default function SearchBar({ packagesBeingInstalled }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [packagesList, setPackagesList] = useState([]);
 
   const handleSearch = async () => {
     if (!packageName) {
@@ -78,28 +79,46 @@ export default function SearchBar({ packagesBeingInstalled }) {
   }, [results, packagesBeingInstalled]);
 
   const isPackageBeingInstalled = (pkg) => {
-    return packagesBeingInstalled.includes(pkg) ? "installing" : false;
+    return packagesBeingInstalled.includes(pkg);
   };
 
-  const packagesList = useMemo(() => {
-    return sortedResults.map((result, index) => (
-      <div key={index} className="app-container">
-        {result.message ? (
-          <p>{result.message}</p>
-        ) : (
-          <AppPackage
-            packageName={result.packageName}
-            version={result.version}
-            packageId={result.packageId}
-            publisher={result.publisher}
-            description={result.description}
-            publisherUrl={result.publisherUrl}
-            packageUrl={result.packageUrl}
-            installStatus={isPackageBeingInstalled(result.packageName)}
-          />
-        )}
-      </div>
-    ));
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const resultsAfterCacheCheck =
+          await window.electron.checkPackagesInCache(sortedResults);
+        const packagesToRender =
+          resultsAfterCacheCheck?.length > 0
+            ? resultsAfterCacheCheck
+            : sortedResults;
+
+        const list = packagesToRender.map((result, index) => (
+          <div key={index} className="app-container">
+            {result.message ? (
+              <p>{result.message}</p>
+            ) : (
+              <AppPackage
+                packageName={result.packageName}
+                version={result.version}
+                packageId={result.packageId}
+                publisher={result.publisher}
+                description={result.description}
+                publisherUrl={result.publisherUrl}
+                packageUrl={result.packageUrl}
+                installStatus={isPackageBeingInstalled(result.packageName)}
+                installed={result.installed}
+              />
+            )}
+          </div>
+        ));
+
+        setPackagesList(list);
+      } catch (error) {
+        console.error("Erro ao verificar pacotes:", error);
+      }
+    };
+
+    fetchPackages();
   }, [sortedResults, packagesBeingInstalled]);
 
   return (

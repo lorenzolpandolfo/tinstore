@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import SearchBar from "../src/components/search-bar/SearchBar.jsx";
 import InstallModal from "./components/install-modal/InstallModal.jsx";
+import CacheModal from "./components/cache-modal/CacheModal.jsx";
 
 const App = () => {
   const [packages, setPackages] = useState([]);
+  const [creatingCache, setCreatingCache] = useState(false);
 
   const handlePackageInstallStatus = (event, installing, packageName) => {
     setPackages((old) => {
@@ -25,8 +27,13 @@ const App = () => {
     handlePackageInstallStatus(event, installing, packageName);
   };
 
+  const handleCache = (event, status) => {
+    setCreatingCache(status);
+  }
+
   useEffect(() => {
     window.electron.onInstallationStatusChange(handleInstallationStatusChange);
+    window.electron.generateCacheClientListenerAndProcess(handleCache, true);
 
     return () => {
       window.electron.removeInstallationListener(
@@ -37,8 +44,9 @@ const App = () => {
 
   return (
     <>
-      <SearchBar packagesBeingInstalled={packages}  />
+      <SearchBar packagesBeingInstalled={packages} />
       {packages.length > 0 && <InstallModal packages={packages} />}
+      {creatingCache && <p><CacheModal /></p>}
     </>
   );
 };
