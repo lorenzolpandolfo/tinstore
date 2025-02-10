@@ -13,6 +13,10 @@ import { dirname } from "path";
 
 import fs from "fs";
 
+import util from "util";
+const execPromise = util.promisify(exec);
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const cacheDir = path.join(__dirname, "cache");
@@ -64,27 +68,33 @@ const hasCache = () => {
   return fs.existsSync(cacheDir) && fs.existsSync(cacheFile);
 };
 
-const createCache = () => {
-  const command = `cd "${cacheDir}" && winget export --source winget -o "${cacheFilename}"`;
 
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      dialog.showMessageBox({
-        type: "error",
-        title: "Generating cache error",
-        message: error.message,
-      });
-    } else if (stderr) {
-      dialog.showMessageBox({
+const createCache = async () => {
+  try {
+    win.webContents.send("cache-generate-modal", true);
+
+    const command = `cd "${cacheDir}" && winget export --source winget -o "${cacheFilename}"`;
+    const { stderr } = await execPromise(command);
+
+    if (stderr) {
+      await dialog.showMessageBox({
         type: "error",
         title: "Generating cache error",
         message: stderr,
       });
     }
-
+  } catch (error) {
+    await dialog.showMessageBox({
+      type: "error",
+      title: "Generating cache error",
+      message: error.message,
+    });
+  } finally {
+    // poderia atualizar a lista do cache adicionando ou removendo o pacote
     win.webContents.send("cache-generate-modal", false);
-  });
+  }
 };
+
 
 
 const packageCache = new Map();

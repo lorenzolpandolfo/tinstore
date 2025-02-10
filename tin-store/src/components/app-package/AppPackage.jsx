@@ -112,7 +112,7 @@ export default function AppPackage({
                   </span>
         )}
         {!installed && installing && (
-          <span className="button app-package-installing">Installing...</span>
+          <span className="app-package-installing">Installing...</span>
         )}
         {!installed && !installing && (
           <span
