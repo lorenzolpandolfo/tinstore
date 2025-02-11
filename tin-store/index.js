@@ -21,6 +21,12 @@ const __dirname = dirname(__filename);
 const cacheDir = path.join(__dirname, "cache");
 const cacheFilename = "installed-packages.json";
 
+let cacheData = false;
+let jsonData = false;
+let packages = false;
+
+const CACHE_PATH = path.join(__dirname, "/cache/installed-packages.json");
+
 const linux = false;
 
 let win;
@@ -55,9 +61,11 @@ ipcMain.on("cache-generate-process", () => {
   handleCache();
 });
 
-const handleCache = () => {
+const handleCache = async () => {
   if (!hasCache()) {
     createCache();
+  } else {
+    await updateCacheData();
   }
 };
 
@@ -68,6 +76,7 @@ const hasCache = () => {
 };
 
 const createCache = async () => {
+  console.log("criando cache")
   try {
     win.webContents.send("cache-generate-modal", true);
 
@@ -91,10 +100,10 @@ const createCache = async () => {
     win.webContents.send("cache-generate-modal", false);
 
     console.log("[Cache] Trying to loading just generated cache");
-    cacheData = await readFile(filePath);
-    cacheData
-      ? console.log("[Cache] new cache loaded!")
-      : console.log("[Cache Error] Error loading new cache");
+    
+    await updateCacheData();
+    
+    console.log("[Cache Error] Error loading new cache");
   }
 };
 
@@ -255,9 +264,9 @@ ipcMain.on("run-command", (event, command, pkg) => {
 });
 
 // isso tudo podia ir para um utils
-const readFile = (filePath) => {
+const readCacheFile = () => {
   return new Promise((resolve, reject) => {
-    fs.readFile(filePath, "utf8", (err, data) => {
+    fs.readFile(CACHE_PATH, "utf8", (err, data) => {
       if (err) {
         console.log("[Warn] Cache not found: " + err);
         resolve(false);
@@ -301,15 +310,17 @@ const findPackageById = (packages, pkg) => {
   return null;
 };
 
-const filePath = path.join(__dirname, "/cache/installed-packages.json");
-let cacheData = await readFile(filePath);
-let jsonData = false;
-let packages = false;
+const updateCacheData = async () => {
+  cacheData = await readCacheFile();
 
-if (cacheData) {
-  jsonData = parseJson(cacheData);
-  packages = getPackages(jsonData);
+  if (cacheData) {
+    console.log("[Cache] data loaded correctly")
+    jsonData = parseJson(cacheData);
+    packages = getPackages(jsonData);
+  }
 }
+
+
 
 const searchPackage = async (pkg) => {
   try {
@@ -331,6 +342,8 @@ const searchPackage = async (pkg) => {
 
 ipcMain.handle("check-packages-in-cache", async (event, packages) => {
   if (!jsonData) return;
+  console.log("Buscando pacotes no cache")
+
   try {
     const results = await Promise.all(
       packages.map(async (packageId) => {
@@ -350,7 +363,7 @@ let operationQueue = Promise.resolve();
 // Função para ler o arquivo JSON atualizado
 const readJsonFile = async () => {
   return new Promise((resolve, reject) => {
-    fs.readFile(filePath, "utf8", (err, data) => {
+    fs.readFile(CACHE_PATH, "utf8", (err, data) => {
       if (err) {
         console.error("[Warn] Falha ao ler o cache:", err);
         resolve(false);
@@ -374,7 +387,7 @@ const writeJsonFile = async (data) => {
         () =>
           new Promise((innerResolve, innerReject) => {
             fs.writeFile(
-              filePath,
+              CACHE_PATH,
               JSON.stringify(data, null, 2),
               "utf8",
               (err) => {
@@ -421,6 +434,9 @@ const addPackage = async (packageName) => {
   // Escreve o JSON atualizado no arquivo
   await writeJsonFile(jsonData);
   console.log(`[Info] Pacote '${packageName}' adicionado ao cache.`);
+
+  await updateCacheData();
+
   return true;
 };
 
@@ -449,5 +465,6 @@ const removePackage = async (packageName) => {
   // Escreve o JSON atualizado no arquivo
   await writeJsonFile(jsonData);
   console.log(`[Info] Pacote '${packageName}' removido do cache.`);
+  await updateCacheData();
   return true;
 };
