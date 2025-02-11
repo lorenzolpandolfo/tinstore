@@ -24,12 +24,12 @@ export default function AppPackage({
 
   const handlePackageInstall = async () => {
     alert(packageName + " will be installed.");
-    window.electron.runCommand("winget install " + packageId, packageName);
+    window.electron.runCommand("winget install " + packageId, {packageId, packageName});
   };
 
   const handlePackageUninstall = async () => {
     alert(packageName + " will be uninstalled.");
-    window.electron.runCommand("winget uninstall " + packageId, packageName);
+    window.electron.runCommand("winget uninstall " + packageId, {packageId, packageName});
   };
 
   const normalizeString = (str) => {

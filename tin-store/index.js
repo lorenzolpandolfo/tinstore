@@ -16,7 +16,6 @@ import fs from "fs";
 import util from "util";
 const execPromise = util.promisify(exec);
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const cacheDir = path.join(__dirname, "cache");
@@ -53,7 +52,7 @@ app.whenReady().then(() => {
 });
 
 ipcMain.on("cache-generate-process", () => {
-    handleCache();
+  handleCache();
 });
 
 const handleCache = () => {
@@ -91,7 +90,7 @@ const createCache = async () => {
   } finally {
     win.webContents.send("cache-generate-modal", false);
 
-    console.log("[Cache] Trying to loading just generated cache")
+    console.log("[Cache] Trying to loading just generated cache");
     cacheData = await readFile(filePath);
     cacheData
       ? console.log("[Cache] new cache loaded!")
@@ -115,8 +114,12 @@ ipcMain.handle("search-package", async (event, packageName) => {
 
       if (!results.length) return { message: "No packages found." };
 
-      const packageDataPromises = results.map((item) => fetchYamlData(item, headers));
-      const packageData = (await Promise.all(packageDataPromises)).filter(Boolean);
+      const packageDataPromises = results.map((item) =>
+        fetchYamlData(item, headers)
+      );
+      const packageData = (await Promise.all(packageDataPromises)).filter(
+        Boolean
+      );
 
       const uniquePackages = deduplicatePackages(packageData);
 
@@ -144,7 +147,10 @@ async function fetchYamlData(item, headers) {
 
     const packageInfo = {
       packageId: data.PackageIdentifier,
-      packageName: data.PackageName || data.PackageIdentifier.split(".").join(" ") || "N/A",
+      packageName:
+        data.PackageName ||
+        data.PackageIdentifier.split(".").join(" ") ||
+        "N/A",
       publisher: data.Publisher,
       version: data.PackageVersion,
       description: data.ShortDescription,
@@ -177,13 +183,30 @@ function deduplicatePackages(packageData) {
   return Array.from(seenPackages.values());
 }
 
-ipcMain.on("run-command", (event, command, packageName) => {
-  event.sender.send("installation-status-change", true, packageName);
+ipcMain.on("run-command", (event, command, pkg) => {
+  event.sender.send(
+    "installation-status-change",
+    { packageName: pkg.packageName, processing: true, installed: false }
+  );
 
-  exec(command, (error, stdout, stderr) => {
+  exec(command, async (error, stdout, stderr) => {
     if (!linux) {
       if (error || stderr) {
-        event.sender.send("installation-status-change", false, packageName);
+        if (command.includes("winget uninstall ")) {
+          event.sender.send("installation-status-change", {
+            packageName: pkg.packageName,
+            processing: false,
+            installed: true,
+          });
+        }
+
+        if (command.includes("winget install ")) {
+          event.sender.send("installation-status-change", {
+            packageName: pkg.packageName,
+            processing: false,
+            installed: false,
+          });
+        }
       }
       if (error) {
         dialog.showMessageBox({
@@ -203,7 +226,23 @@ ipcMain.on("run-command", (event, command, packageName) => {
         event.reply("command-result", `Stderr: ${stderr}`);
         return;
       }
-      event.sender.send("installation-status-change", false, packageName);
+
+      if (command.includes("winget uninstall ")) {
+        await removePackage(pkg.packageId);
+        event.sender.send(
+          "installation-status-change",
+          { packageName:pkg.packageName, processing: false, installed: false }
+        );
+      }
+
+      if (command.includes("winget install ")) {
+        await addPackage(pkg.packageId);
+        event.sender.send(
+          "installation-status-change",
+          { packageName:pkg.packageName, processing: false, installed: true }
+        );
+      }
+
     }
 
     dialog.showMessageBox({
@@ -218,7 +257,7 @@ ipcMain.on("run-command", (event, command, packageName) => {
 // isso tudo podia ir para um utils
 const readFile = (filePath) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(filePath, 'utf8', (err, data) => {
+    fs.readFile(filePath, "utf8", (err, data) => {
       if (err) {
         console.log("[Warn] Cache not found: " + err);
         resolve(false);
@@ -234,7 +273,7 @@ const parseJson = (data) => {
   try {
     return JSON.parse(data);
   } catch (err) {
-    console.log("Erro ao analisar JSON do Cache " + err)
+    console.log("Erro ao analisar JSON do Cache " + err);
     return false;
   }
 };
@@ -262,10 +301,10 @@ const findPackageById = (packages, pkg) => {
   return null;
 };
 
-const filePath = path.join(__dirname, '/cache/installed-packages.json');
+const filePath = path.join(__dirname, "/cache/installed-packages.json");
 let cacheData = await readFile(filePath);
-let jsonData = false
-let packages = false
+let jsonData = false;
+let packages = false;
 
 if (cacheData) {
   jsonData = parseJson(cacheData);
@@ -273,7 +312,6 @@ if (cacheData) {
 }
 
 const searchPackage = async (pkg) => {
-  
   try {
     const foundPackage = findPackageById(packages, pkg);
 
@@ -283,7 +321,7 @@ const searchPackage = async (pkg) => {
     };
   } catch (error) {
     console.error(error);
-    
+
     return {
       ...pkg,
       installed: false,
@@ -305,3 +343,111 @@ ipcMain.handle("check-packages-in-cache", async (event, packages) => {
     return [];
   }
 });
+
+// Fila para operações de leitura/escrita no arquivo
+let operationQueue = Promise.resolve();
+
+// Função para ler o arquivo JSON atualizado
+const readJsonFile = async () => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, "utf8", (err, data) => {
+      if (err) {
+        console.error("[Warn] Falha ao ler o cache:", err);
+        resolve(false);
+      } else {
+        try {
+          resolve(JSON.parse(data));
+        } catch (parseError) {
+          console.error("[Error] Erro ao analisar JSON:", parseError);
+          resolve(false);
+        }
+      }
+    });
+  });
+};
+
+// Função para escrever no arquivo JSON, garantindo que não haja concorrência
+const writeJsonFile = async (data) => {
+  return new Promise((resolve, reject) => {
+    operationQueue = operationQueue
+      .then(
+        () =>
+          new Promise((innerResolve, innerReject) => {
+            fs.writeFile(
+              filePath,
+              JSON.stringify(data, null, 2),
+              "utf8",
+              (err) => {
+                if (err) {
+                  console.error("[Error] Falha ao salvar o cache:", err);
+                  innerReject(err);
+                } else {
+                  innerResolve(true);
+                }
+              }
+            );
+          })
+      )
+      .then(resolve)
+      .catch(reject);
+  });
+};
+
+// Função para adicionar um pacote
+const addPackage = async (packageName) => {
+  let jsonData = await readJsonFile();
+  if (!jsonData || !jsonData.Sources[0]?.Packages) {
+    console.error("[Error] Estrutura do cache inválida.");
+    return false;
+  }
+
+  const packages = jsonData.Sources[0].Packages;
+
+  // Verifica se o pacote já existe
+  const existingPackage = packages.find(
+    (pkg) => pkg.PackageIdentifier === packageName
+  );
+  if (existingPackage) {
+    console.log(`[Warn] Pacote '${packageName}' já existe no cache.`);
+    return false;
+  }
+
+  // Adiciona o novo pacote
+  packages.push({
+    PackageIdentifier: packageName,
+    InstalledDate: new Date().toISOString(),
+  });
+
+  // Escreve o JSON atualizado no arquivo
+  await writeJsonFile(jsonData);
+  console.log(`[Info] Pacote '${packageName}' adicionado ao cache.`);
+  return true;
+};
+
+// Função para remover um pacote
+const removePackage = async (packageName) => {
+  let jsonData = await readJsonFile();
+  if (!jsonData || !jsonData.Sources[0]?.Packages) {
+    console.error("[Error] Estrutura do cache inválida.");
+    return false;
+  }
+
+  const packages = jsonData.Sources[0].Packages;
+
+  // Encontra o índice do pacote para remover
+  const packageIndex = packages.findIndex(
+    (pkg) => pkg.PackageIdentifier === packageName
+  );
+  if (packageIndex === -1) {
+    console.log(`[Warn] Pacote '${packageName}' não encontrado no cache.`);
+    return false;
+  }
+
+  // Remove o pacote
+  packages.splice(packageIndex, 1);
+
+  // Escreve o JSON atualizado no arquivo
+  await writeJsonFile(jsonData);
+  console.log(`[Info] Pacote '${packageName}' removido do cache.`);
+  return true;
+};

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import AppPackage from "../app-package/AppPackage.jsx";
 import "../search-bar/search-bar.css";
 
-export default function SearchBar({ packagesBeingInstalled }) {
+export default function SearchBar({ packagesBeingInstalled: packagesBeingProcessed }) {
   const [packageName, setPackageName] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -76,11 +76,17 @@ export default function SearchBar({ packagesBeingInstalled }) {
 
       return 0;
     });
-  }, [results, packagesBeingInstalled]);
+  }, [results, packagesBeingProcessed]);
 
-  const isPackageBeingInstalled = (pkg) => {
-    return packagesBeingInstalled.includes(pkg);
+  const isPackageBeingProcessed = (packageName) => {
+    return packagesBeingProcessed.some(pkg => pkg.packageName === packageName && pkg.processing);
   };
+
+
+  const isPackageInstalled = (packageName) => {
+    return packagesBeingProcessed.some(pkg => pkg.packageName === packageName && pkg.installed);
+  };
+  
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -105,8 +111,9 @@ export default function SearchBar({ packagesBeingInstalled }) {
                 description={result.description}
                 publisherUrl={result.publisherUrl}
                 packageUrl={result.packageUrl}
-                installStatus={isPackageBeingInstalled(result.packageName)}
-                installed={result.installed}
+                installStatus={isPackageBeingProcessed(result.packageName)}
+                installed={result.installed || isPackageInstalled(result.packageName)}
+                //installed={isPackageInstalled(result.packageName)}
               />
             )}
           </div>
@@ -119,7 +126,7 @@ export default function SearchBar({ packagesBeingInstalled }) {
     };
 
     fetchPackages();
-  }, [sortedResults, packagesBeingInstalled]);
+  }, [sortedResults, packagesBeingProcessed]);
 
   return (
     <div className="search">
