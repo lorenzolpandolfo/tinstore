@@ -68,7 +68,6 @@ const hasCache = () => {
   return fs.existsSync(cacheDir) && fs.existsSync(cacheFile);
 };
 
-
 const createCache = async () => {
   try {
     win.webContents.send("cache-generate-modal", true);
@@ -90,12 +89,15 @@ const createCache = async () => {
       message: error.message,
     });
   } finally {
-    // poderia atualizar a lista do cache adicionando ou removendo o pacote
     win.webContents.send("cache-generate-modal", false);
+
+    console.log("[Cache] Trying to loading just generated cache")
+    cacheData = await readFile(filePath);
+    cacheData
+      ? console.log("[Cache] new cache loaded!")
+      : console.log("[Cache Error] Error loading new cache");
   }
 };
-
-
 
 const packageCache = new Map();
 
@@ -261,7 +263,7 @@ const findPackageById = (packages, pkg) => {
 };
 
 const filePath = path.join(__dirname, '/cache/installed-packages.json');
-const cacheData = await readFile(filePath);
+let cacheData = await readFile(filePath);
 let jsonData = false
 let packages = false
 

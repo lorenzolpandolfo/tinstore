@@ -15,7 +15,7 @@ export default function InstallModal({ packages }) {
 
   return (
     <div
-      title={`Installing${formatPackages(packages)}`}
+      title={`Processing${formatPackages(packages)}`}
       className="install-modal"
     >
       <img src="src/assets/download.svg" alt="download icon" />
