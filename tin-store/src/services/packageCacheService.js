@@ -1,4 +1,5 @@
 import fs from "fs";
+import { dialog } from "electron";
 
 import { readCacheData, writeCacheData } from "../utils/fileUtils.js";
 import { CACHE_DIR, CACHE_FILE_PATH } from "../config/cachePath.js";
