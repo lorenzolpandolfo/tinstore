@@ -3,6 +3,8 @@ import { dialog } from "electron";
 
 import { readCacheData, writeCacheData } from "../utils/fileUtils.js";
 import { CACHE_DIR, CACHE_FILE_PATH } from "../config/cachePath.js";
+import { exec } from "child_process"
+import util from "util"
 
 let inMemoryCacheData;
 
@@ -47,7 +49,7 @@ export const addPackage = async (packageName) => {
     InstalledDate: new Date().toISOString(),
   });
 
-  await writeJsonFile(jsonData);
+  await writeCacheData(jsonData);
   console.log(`[Info] Pacote '${packageName}' adicionado ao cache.`);
   await updateCacheData();
   return true;
@@ -93,12 +95,14 @@ export const hasCache = () => {
   return fs.existsSync(CACHE_DIR) && fs.existsSync(CACHE_FILE_PATH);
 };
 
+const execPromise = util.promisify(exec);
+
 export const createCache = async (win) => {
   console.log("criando cache");
   try {
     win.webContents.send("cache-generate-modal", true);
 
-    const command = `cd "${CACHE_DIR}" && winget export --source winget -o "${cacheFilename}"`;
+    const command = `cd "${CACHE_DIR}" && winget export --source winget -o installed-packages.json`;
     const { stderr } = await execPromise(command);
 
     if (stderr) {

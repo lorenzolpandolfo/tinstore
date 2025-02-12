@@ -103,7 +103,7 @@ export default function AppPackage({
         </div>
       </div>
       <div className="app-buttons">
-        {installed && (
+        {installed && !processing && (
                     <span
                     className="button app-package-uninstall"
                     onClick={() => handlePackageUninstall()}
@@ -111,8 +111,11 @@ export default function AppPackage({
                     Uninstall
                   </span>
         )}
+        {installed && processing && (
+          <span className="app-package-installing">Uninstalling...</span>
+        )}
         {!installed && processing && (
-          <span className="app-package-installing">Processing...</span>
+          <span className="app-package-installing">Installing...</span>
         )}
         {!installed && !processing && (
           <span

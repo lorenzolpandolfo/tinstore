@@ -2,21 +2,12 @@ import "./install-modal.css";
 
 export default function InstallModal({ packages }) {
   const formatPackages = (packages) => {
-
-    console.log(packages)
-
-    console.log("Criando o icone de processing")
-
     if (!packages || packages.length === 0) return "";
 
     let stringPackages = "";
 
-    const processingPackages = packages.filter((p) => p.processing == true)
-
-    console.log("Processingpackages: ", processingPackages)
-
-    processingPackages.forEach((p, index) => {
-      stringPackages += ` ${p.packageName}${index < packages.length - 1 ? "," : "..."}`;
+    packages.forEach((p, index) => {
+      stringPackages += ` ${p}${index < packages.length - 1 ? "," : "..."}`;
     });
 
     return stringPackages;

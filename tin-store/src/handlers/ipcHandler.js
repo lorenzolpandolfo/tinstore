@@ -1,5 +1,6 @@
 import { dialog, ipcMain } from "electron";
 import {
+  addPackage,
   findPackageById,
   getInMemoryCacheData,
   handleCache,
