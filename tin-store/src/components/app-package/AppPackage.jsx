@@ -14,7 +14,7 @@ export default function AppPackage({
   description,
   publisherUrl,
   packageUrl,
-  installStatus: installing,
+  processing,
   installed,
 }) {
   const fmt_packageName = packageName || MESSAGE_NO_INFORMATION;
@@ -111,10 +111,10 @@ export default function AppPackage({
                     Uninstall
                   </span>
         )}
-        {!installed && installing && (
-          <span className="app-package-installing">Installing...</span>
+        {!installed && processing && (
+          <span className="app-package-installing">Processing...</span>
         )}
-        {!installed && !installing && (
+        {!installed && !processing && (
           <span
             className="button app-package-install"
             onClick={() => handlePackageInstall()}

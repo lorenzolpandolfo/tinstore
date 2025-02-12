@@ -7,27 +7,18 @@ const App = () => {
   const [packages, setPackages] = useState([]);
   const [creatingCache, setCreatingCache] = useState(false);
 
-  const handleProcessingPackages = (event, status) => {
-    console.log(status)
+  const handleProcessingPackages = (event, packageName) => {
 
     setPackages((old) => {
-      if (status.processing && old.some((pkg) => pkg.packageName === status.packageName)) {
-        // caso em que o usuario manda fazer a instalacao do mesmo pacote 2 ou + vezes
-        // pode lancar um sinal pra cancelar essa instalacao.. porem como cancelar o child process?
-        // tambem, falharia com um erro a instalação
-        return old;
+      if (!packageName) return old;
+      
+      const packageIsProcessing = old.some((pkg) => pkg === packageName);
+
+      if (packageIsProcessing) {
+        return old.filter((pkg) => pkg !== packageName);
       }
 
-      if (status.processing) {
-        return [...old, status];
-      }
-
-      // return old;
-      // remove o pacote da lista de pacotes em processo
-      // caso eu tenha instalado um app, ele salvou no cache, se sair da lista,
-      // vai puxar o dado do cache e atualizar
-      // se nao funcionar, mantem ele na lista
-      return old.filter((pkg) => pkg.packageName !== status.packageName);
+      return [...old, packageName];
     });
   };
 

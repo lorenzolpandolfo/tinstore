@@ -17,7 +17,6 @@ export default function SearchBar({ packagesBeingInstalled: packagesBeingProcess
 
     setLoading(true);
     setError("");
-    setResults([]);
 
     try {
       const packageData = await window.electron.searchPackage(packageName);
@@ -36,6 +35,7 @@ export default function SearchBar({ packagesBeingInstalled: packagesBeingProcess
       setResults(packageData);
     } catch (err) {
       setLoading(false);
+      setResults([]);
       setError(`Failed to fetch data: ${err.message}`);
     }
   };
@@ -78,18 +78,13 @@ export default function SearchBar({ packagesBeingInstalled: packagesBeingProcess
     });
   }, [results, packagesBeingProcessed]);
 
-  const isPackageBeingProcessed = (packageName) => {
-    return packagesBeingProcessed.some(pkg => pkg.packageName === packageName && pkg.processing);
+  const isProcessing = (packageName) => {
+    return packagesBeingProcessed.some(pkg => pkg === packageName);
   };
-
-
-  const isPackageInstalled = (packageName) => {
-    return packagesBeingProcessed.some(pkg => pkg.packageName === packageName && pkg.installed);
-  };
-  
 
   useEffect(() => {
     const fetchPackages = async () => {
+      console.log("buscando pacotes")
       try {
         const resultsAfterCacheCheck =
           await window.electron.checkPackagesInCache(sortedResults);
@@ -111,9 +106,8 @@ export default function SearchBar({ packagesBeingInstalled: packagesBeingProcess
                 description={result.description}
                 publisherUrl={result.publisherUrl}
                 packageUrl={result.packageUrl}
-                installStatus={isPackageBeingProcessed(result.packageName)}
-                installed={result.installed || isPackageInstalled(result.packageName)}
-                //installed={isPackageInstalled(result.packageName)}
+                processing={isProcessing(result.packageName)}
+                installed={result.installed}
               />
             )}
           </div>
