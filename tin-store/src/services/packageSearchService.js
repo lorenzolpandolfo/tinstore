@@ -7,7 +7,7 @@ export const searchPackage = async (packageName, GITHUB_TOKEN) => {
     const cachedPackage = getCachedPackage(packageName);
     if (cachedPackage) return cachedPackage;
 
-    const url = `https://api.github.com/search/code?q=${packageName}+extension:yaml+repo:microsoft/winget-pkgs`;
+    const url = `https://api.github.com/search/code?q=${packageName}+extension:yaml+repo:microsoft/winget-pkgs&per_page=7`;
     const headers = { Authorization: `token ${GITHUB_TOKEN}` };
     const response = await axios.get(url, { headers });
 
@@ -17,7 +17,9 @@ export const searchPackage = async (packageName, GITHUB_TOKEN) => {
       if (!results.length) return { message: "No packages found." };
 
       const packageDataPromises = results.map((item) =>
-        fetchYamlData(item, headers)
+        {
+          console.log("[Request] sending request to get data for package: ", packageName)
+          return fetchYamlData(item, headers)}
       );
       const packageData = (await Promise.all(packageDataPromises)).filter(
         Boolean
@@ -25,30 +27,26 @@ export const searchPackage = async (packageName, GITHUB_TOKEN) => {
 
       const uniquePackages = deduplicatePackages(packageData);
 
-      setCachedPackage(packageName, uniquePackages);
-      return uniquePackages;
+      setCachedPackage(packageName, uniquePackages || packageData);
+      return uniquePackages || packageData;
     }
   } catch (error) {
     return { error: `Failed to search package: ${error.message}` };
   }
 };
 
-const deduplicatePackages = (packageData) => {
+function deduplicatePackages(packageData) {
   const seenPackages = new Map();
 
   packageData.forEach((pkg) => {
-    if (!seenPackages.has(pkg.packageName)) {
+    const existingPackage = seenPackages.get(pkg.packageName);
+    if (!existingPackage || compareVersions(pkg.version, existingPackage.version) > 0) {
       seenPackages.set(pkg.packageName, pkg);
-    } else {
-      const existingPackage = seenPackages.get(pkg.packageName);
-      if (compareVersions(pkg.version, existingPackage.version) > 0) {
-        seenPackages.set(pkg.packageName, pkg);
-      }
     }
   });
 
   return Array.from(seenPackages.values());
-};
+}
 
 const compareVersions = (version1, version2) => {
   const v1 = version1.split(".").map(Number);

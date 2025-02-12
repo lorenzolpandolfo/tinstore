@@ -84,7 +84,6 @@ export default function SearchBar({ packagesBeingInstalled: packagesBeingProcess
 
   useEffect(() => {
     const fetchPackages = async () => {
-      console.log("buscando pacotes")
       try {
         const resultsAfterCacheCheck =
           await window.electron.checkPackagesInCache(sortedResults);
