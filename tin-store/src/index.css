@@ -36,3 +36,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
+body::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}

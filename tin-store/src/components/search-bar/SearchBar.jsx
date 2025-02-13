@@ -125,6 +125,7 @@ export default function SearchBar({ packagesBeingInstalled: packagesBeingProcess
     <div className="search">
       <div className="package-search">
         <input
+          spellCheck="false"
           className="package-search-input"
           type="text"
           name="package-name"
