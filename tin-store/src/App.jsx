@@ -6,6 +6,7 @@ import TopHeader from "./components/top-header/TopHeader.jsx";
 import { useContextSection } from "./contexts/SectionContext.jsx";
 import { useContextResults } from "./contexts/ResultsContext.jsx";
 import AppPackage from "./components/app-package/AppPackage.jsx";
+import Homepage from "./components/homepage/Homepage.jsx";
 
 const formatPackageIdentifier = (pkgId) => {
   return pkgId.replaceAll(".", " ");
@@ -119,7 +120,7 @@ const App = () => {
       {contextSection === "explore" && (
         <>
           <SearchBar packagesBeingInstalled={packages} />
-          {finalResults.length > 0 ? finalResults : <p>homepage</p>}
+          {finalResults.length > 0 ? finalResults : <Homepage />}
         </>
       )}
 
