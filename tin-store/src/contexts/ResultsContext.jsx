@@ -4,9 +4,10 @@ const ResultsContext = createContext();
 
 export const ResultsContextProvider = ({ children }) => {
   const [showResults, setShowResults] = useState(false);
+  const [finalResults, setFinalResults] = useState(false);
 
   return (
-    <ResultsContext.Provider value={{ showResults, setShowResults }}>
+    <ResultsContext.Provider value={{ showResults, setShowResults, finalResults, setFinalResults }}>
       {children}
     </ResultsContext.Provider>
   );

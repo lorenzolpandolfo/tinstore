@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import AppPackage from "../app-package/AppPackage.jsx";
 import "../search-bar/search-bar.css";
+import { useContextResults } from "../../contexts/ResultsContext.jsx";
 
 export default function SearchBar({ packagesBeingInstalled: packagesBeingProcessed }) {
   const [packageName, setPackageName] = useState("");
@@ -8,6 +9,7 @@ export default function SearchBar({ packagesBeingInstalled: packagesBeingProcess
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [packagesList, setPackagesList] = useState([]);
+  const { setFinalResults } = useContextResults();
 
   const handleSearch = async () => {
     if (!packageName) {
@@ -112,7 +114,7 @@ export default function SearchBar({ packagesBeingInstalled: packagesBeingProcess
           </div>
         ));
 
-        setPackagesList(list);
+        setFinalResults(list);
       } catch (error) {
         console.error("Erro ao verificar pacotes:", error);
       }

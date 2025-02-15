@@ -30,7 +30,7 @@ export const findPackageById = (packages, pkg) => {
   );
 };
 
-export const addPackage = async (packageName) => {
+export const addPackage = async (pkg) => {
   let jsonData = await readCacheData();
   if (!jsonData || !jsonData.Sources[0]?.Packages) {
     console.error("[Error] Estrutura do cache inválida.");
@@ -39,18 +39,24 @@ export const addPackage = async (packageName) => {
 
   const packages = jsonData.Sources[0].Packages;
 
-  if (packages.find((pkg) => pkg.PackageIdentifier === packageName)) {
-    console.log(`[Warn] Pacote '${packageName}' já existe no cache.`);
+  if (packages.find((pkgIn) => pkgIn.PackageIdentifier === pkg)) {
+    console.log(`[Warn] Pacote '${pkg.packageId}' já existe no cache.`);
     return false;
   }
 
   packages.push({
-    PackageIdentifier: packageName,
+    PackageIdentifier: pkg.packageId,
+    packageName: pkg.packageName,
+    version: pkg.version,
+    publisher: pkg.publisher,
+    description: pkg.description,
+    publisherUrl: pkg.publisherUrl,
+    packageUrl: pkg.packageUrl,
     InstalledDate: new Date().toISOString(),
   });
 
   await writeCacheData(jsonData);
-  console.log(`[Info] Pacote '${packageName}' adicionado ao cache.`);
+  console.log(`[Info] Pacote '${pkg.packageId}' adicionado ao cache.`);
   await updateCacheData();
   return true;
 };
@@ -120,11 +126,7 @@ export const createCache = async (win) => {
     });
   } finally {
     win.webContents.send("cache-generate-modal", false);
-
     console.log("[Cache] Trying to loading just generated cache");
-
     await updateCacheData();
-
-    console.log("[Cache Error] Error loading new cache");
   }
 };

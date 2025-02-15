@@ -33,4 +33,6 @@ contextBridge.exposeInMainWorld("electron", {
 
   checkPackagesInCache: (packages) => ipcRenderer.invoke("check-packages-in-cache", packages),
 
+  getPackagesInCache: () => ipcRenderer.invoke("get-packages-in-cache"),
+
 });

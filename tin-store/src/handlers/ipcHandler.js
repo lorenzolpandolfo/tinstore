@@ -15,6 +15,10 @@ export const registerHandlers = (win) => {
     handleCache(win);
   });
 
+  ipcMain.handle("get-packages-in-cache", async () => {
+    return await getInMemoryCacheData();
+  });
+
   ipcMain.handle("check-packages-in-cache", async (event, packages) => {
     const jsonData = await getInMemoryCacheData();
     if (!jsonData) return;
@@ -66,7 +70,7 @@ export const registerHandlers = (win) => {
       }
 
       if (command.includes("winget install ")) {
-        await addPackage(pkg.packageId);
+        await addPackage(pkg);
 
         dialog.showMessageBox({
           type: "info",
