@@ -5,6 +5,15 @@
     align-items: center;
 
     button {
+        display: flex;
         background-color: transparent;
+        width: 100px;
+        align-items: center;
+        justify-content: center;
+        margin: 5px 10px;
+    }
+
+    .selected {
+        background-color: var(--tertiary-background-color);
     }
 }

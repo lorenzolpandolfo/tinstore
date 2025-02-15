@@ -3,7 +3,7 @@ import { useContextSection } from "../../contexts/SectionContext";
 import "./top-header.css";
 
 export default function TopHeader() {
-  const { setContextSection } = useContextSection();
+  const { contextSection, setContextSection } = useContextSection();
   const { setFinalResults } = useContextResults();
 
   const handleSectionChange = (section) => {
@@ -15,13 +15,13 @@ export default function TopHeader() {
     <div className="top-header">
       <button
         onClick={() => handleSectionChange("explore")}
-        className="top-header-button button"
+        className={`top-header-button button ${contextSection === 'explore' && 'selected'}`}
       >
         <span>Explore</span>
       </button>
       <button
         onClick={() => handleSectionChange("installed")}
-        className="top-header-button button"
+        className={`top-header-button button ${contextSection === 'installed' && 'selected'}`}
       >
         <span>Installed</span>
       </button>

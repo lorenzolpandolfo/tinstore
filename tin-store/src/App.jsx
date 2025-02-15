@@ -55,9 +55,9 @@ const App = () => {
   useEffect(() => {
     const fetchPackages = async () => {
       if (contextSection === "installed") {
-        const pkgs = await getInstalledPackages();
-        setInstalledPackages(pkgs.Sources[0].Packages);
-        console.log("pacotes instalados: ", pkgs.Sources[0].Packages);
+        const cacheData = (await getInstalledPackages()) || [];
+        const pkgs = cacheData.Sources[0].Packages;
+        setInstalledPackages(pkgs);
       }
     };
 
@@ -110,24 +110,22 @@ const App = () => {
       <TopHeader />
 
       {contextSection === "installed" &&
-        installedPackages.length > 0 &&
-        renderInstalledPackages()}
+        (installedPackages.length > 0 ? (
+          renderInstalledPackages()
+        ) : (
+          <span>No packages found.</span>
+        ))}
 
       {contextSection === "explore" && (
         <>
           <SearchBar packagesBeingInstalled={packages} />
-          {(finalResults.length > 0 && finalResults) || <p>homepage</p>}
+          {finalResults.length > 0 ? finalResults : <p>homepage</p>}
         </>
       )}
 
       {packages.length > 0 && <InstallModal packages={packages} />}
-      {creatingCache && (
-        <p>
-          <CacheModal />
-        </p>
-      )}
+      {creatingCache && <CacheModal />}
     </>
   );
 };
-
 export default App;
