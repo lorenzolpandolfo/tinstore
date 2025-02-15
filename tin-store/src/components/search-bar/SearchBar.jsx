@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import AppPackage from "../app-package/AppPackage.jsx";
 import "../search-bar/search-bar.css";
 import { useContextResults } from "../../contexts/ResultsContext.jsx";
+import { useContextSearch } from "../../contexts/SearchContext.jsx";
 
 export default function SearchBar({ packagesBeingInstalled: packagesBeingProcessed }) {
   const [packageName, setPackageName] = useState("");
@@ -9,42 +10,15 @@ export default function SearchBar({ packagesBeingInstalled: packagesBeingProcess
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [packagesList, setPackagesList] = useState([]);
-  const { setFinalResults } = useContextResults();
 
-  const handleSearch = async () => {
-    if (!packageName) {
-      alert("Please enter a package name");
-      return;
-    }
+  const { search, setSearch, handleSearch } = useContextSearch();
 
-    setLoading(true);
-    setError("");
+  const { showResults, finalResults, setFinalResults } = useContextResults();
 
-    try {
-      const packageData = await window.electron.searchPackage(packageName);
-      setLoading(false);
-
-      if (packageData.error) {
-        setError(packageData.error);
-        return;
-      }
-
-      if (packageData.message) {
-        setResults([{ message: packageData.message }]);
-        return;
-      }
-
-      setResults(packageData);
-    } catch (err) {
-      setLoading(false);
-      setResults([]);
-      setError(`Failed to fetch data: ${err.message}`);
-    }
-  };
-
-  const handleTyping = (event) => {
+  const handleTyping = async (event) => {
     if (event.key === "Enter") {
-      handleSearch();
+      const results = await handleSearch(packageName);
+      setResults(results);
     }
   };
 
@@ -78,10 +52,10 @@ export default function SearchBar({ packagesBeingInstalled: packagesBeingProcess
 
       return 0;
     });
-  }, [results, packagesBeingProcessed]);
+  }, [search, results, packagesBeingProcessed]);
 
   const isProcessing = (packageName) => {
-    return packagesBeingProcessed.some(pkg => pkg === packageName);
+    return packagesBeingProcessed.some((pkg) => pkg === packageName);
   };
 
   useEffect(() => {
@@ -123,6 +97,19 @@ export default function SearchBar({ packagesBeingInstalled: packagesBeingProcess
     fetchPackages();
   }, [sortedResults, packagesBeingProcessed]);
 
+  useEffect(() => {
+    const getResults = async () => {
+      try {
+        const fr = await finalResults;
+        console.log("Final results: ", fr);
+        setResults(fr || []);
+      } catch (error) {
+        console.error("Erro ao buscar resultados: ", error);
+      }
+    };
+
+    getResults();
+  }, [search]);
   return (
     <div className="search">
       <div className="package-search">
