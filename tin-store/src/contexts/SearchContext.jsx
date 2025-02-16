@@ -80,7 +80,7 @@ export const SearchContextProvider = ({ children }) => {
 
       return 0;
     });
-  }, [search, localResults, processing]); // Dependências: search, localResults, processing
+  }, [localResults]);
 
   const isProcessing = (packageName) => {
     return processing.some((pkg) => pkg === packageName);
@@ -123,7 +123,7 @@ export const SearchContextProvider = ({ children }) => {
     };
 
     createPackageComponents();
-  }, [sortedResults]); // Dependência: sortedResults
+  }, [sortedResults, processing]);
 
   return (
     <SearchContext.Provider
