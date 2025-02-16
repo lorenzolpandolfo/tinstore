@@ -8,6 +8,7 @@ import { useContextResults } from "./contexts/ResultsContext.jsx";
 import AppPackage from "./components/app-package/AppPackage.jsx";
 import Homepage from "./components/homepage/Homepage.jsx";
 import { useProcessingContext } from "./contexts/ProcessingContext.jsx";
+import MenuModal from "./components/menu-modal/MenuModal.jsx";
 
 const formatPackageIdentifier = (pkgId) => {
   return pkgId.replaceAll(".", " ");
@@ -80,6 +81,8 @@ const App = () => {
 
       {processing.length > 0 && <InstallModal packages={processing} />}
       {creatingCache && <CacheModal />}
+      
+      <MenuModal />
     </>
   );
 };
