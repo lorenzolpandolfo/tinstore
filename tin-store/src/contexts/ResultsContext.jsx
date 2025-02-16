@@ -4,7 +4,7 @@ const ResultsContext = createContext();
 
 export const ResultsContextProvider = ({ children }) => {
   const [showResults, setShowResults] = useState(false);
-  const [finalResults, setFinalResults] = useState(false);
+  const [finalResults, setFinalResults] = useState([]);
 
   return (
     <ResultsContext.Provider value={{ showResults, setShowResults, finalResults, setFinalResults }}>

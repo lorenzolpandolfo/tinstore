@@ -5,13 +5,16 @@ import App from "./App.jsx";
 import { SectionContextProvider } from "./contexts/SectionContext.jsx";
 import { ResultsContextProvider } from "./contexts/ResultsContext.jsx";
 import { SearchContextProvider } from "./contexts/SearchContext.jsx";
+import { ProcessingContextProvider } from "./contexts/ProcessingContext.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <ResultsContextProvider>
-    <SearchContextProvider>
-      <SectionContextProvider>
-        <App />
-      </SectionContextProvider>
-    </SearchContextProvider>
-  </ResultsContextProvider>
+  <ProcessingContextProvider>
+    <ResultsContextProvider>
+      <SearchContextProvider>
+        <SectionContextProvider>
+          <App />
+        </SectionContextProvider>
+      </SearchContextProvider>
+    </ResultsContextProvider>
+  </ProcessingContextProvider>
 );

@@ -1,10 +1,13 @@
 import axios from "axios";
-import { getCachedPackage, setCachedPackage } from "../utils/memoryCacheUtils.js";
+import {
+  getCachedPackage,
+  setCachedPackage,
+} from "../utils/memoryCacheUtils.js";
 import { fetchYamlData } from "../utils/yamlParser.js";
 
 export const searchPackage = async (packageName, GITHUB_TOKEN) => {
   try {
-    const cachedPackage = getCachedPackage(packageName);
+    const cachedPackage = getCachedPackage(packageName.toLowerCase());
     if (cachedPackage) return cachedPackage;
 
     const url = `https://api.github.com/search/code?q=${packageName}+extension:yaml+repo:microsoft/winget-pkgs&per_page=7`;
@@ -16,18 +19,20 @@ export const searchPackage = async (packageName, GITHUB_TOKEN) => {
 
       if (!results.length) return { message: "No packages found." };
 
-      const packageDataPromises = results.map((item) =>
-        {
-          console.log("[Request] sending request to get data for package: ", packageName)
-          return fetchYamlData(item, headers)}
-      );
+      const packageDataPromises = results.map((item) => {
+        console.log(
+          "[Request] sending request to get data for package: ",
+          packageName
+        );
+        return fetchYamlData(item, headers);
+      });
       const packageData = (await Promise.all(packageDataPromises)).filter(
         Boolean
       );
 
       const uniquePackages = deduplicatePackages(packageData);
 
-      setCachedPackage(packageName, uniquePackages || packageData);
+      setCachedPackage(packageName.toLowerCase(), uniquePackages || packageData);
       return uniquePackages || packageData;
     }
   } catch (error) {
@@ -40,7 +45,10 @@ function deduplicatePackages(packageData) {
 
   packageData.forEach((pkg) => {
     const existingPackage = seenPackages.get(pkg.packageName);
-    if (!existingPackage || compareVersions(pkg.version, existingPackage.version) > 0) {
+    if (
+      !existingPackage ||
+      compareVersions(pkg.version, existingPackage.version) > 0
+    ) {
       seenPackages.set(pkg.packageName, pkg);
     }
   });
