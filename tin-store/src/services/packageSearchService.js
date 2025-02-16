@@ -32,7 +32,10 @@ export const searchPackage = async (packageName, GITHUB_TOKEN) => {
 
       const uniquePackages = deduplicatePackages(packageData);
 
-      setCachedPackage(packageName.toLowerCase(), uniquePackages || packageData);
+      setCachedPackage(
+        packageName.toLowerCase(),
+        uniquePackages || packageData
+      );
       return uniquePackages || packageData;
     }
   } catch (error) {
@@ -67,4 +70,18 @@ const compareVersions = (version1, version2) => {
     if (num1 < num2) return -1;
   }
   return 0;
+};
+
+export const handlePackageSearch = async (packageName) => {
+  if (!packageName) return [];
+
+  try {
+    const packageData = await window.electron.searchPackage(packageName);
+    if (packageData?.cached) return packageData.cached;
+
+    return packageData.error || packageData.message ? [] : packageData;
+  } catch (err) {
+    console.error("Error searching packages:", err);
+    return [];
+  }
 };

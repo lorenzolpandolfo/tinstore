@@ -2,6 +2,7 @@ import { createContext, useState, useContext, useMemo, useEffect } from "react";
 import { useContextResults } from "./ResultsContext";
 import AppPackage from "../components/app-package/AppPackage";
 import { useProcessingContext } from "./ProcessingContext";
+import { handlePackageSearch } from "../services/packageSearchService";
 
 const SearchContext = createContext();
 
@@ -11,7 +12,7 @@ export const SearchContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { finalResults, setFinalResults } = useContextResults();
+  const { setFinalResults } = useContextResults();
   const { processing } = useProcessingContext();
 
   const handleSearch = async (packageName) => {
@@ -20,7 +21,7 @@ export const SearchContextProvider = ({ children }) => {
     setError("");
 
     try {
-      const searchResults = await handleSearchIn(packageName);
+      const searchResults = await handlePackageSearch(packageName);
 
       if (!searchResults || searchResults.length === 0) {
         console.log("No results found");
@@ -35,20 +36,6 @@ export const SearchContextProvider = ({ children }) => {
       setError("Failed to fetch results");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleSearchIn = async (packageName) => {
-    if (!packageName) return [];
-
-    try {
-      const packageData = await window.electron.searchPackage(packageName);
-      if (packageData?.cached) return packageData.cached;
-
-      return packageData.error || packageData.message ? [] : packageData;
-    } catch (err) {
-      console.error("Error searching packages:", err);
-      return [];
     }
   };
 
@@ -82,10 +69,6 @@ export const SearchContextProvider = ({ children }) => {
     });
   }, [localResults]);
 
-  const isProcessing = (packageName) => {
-    return processing.some((pkg) => pkg === packageName);
-  };
-
   useEffect(() => {
     const createPackageComponents = async () => {
       try {
@@ -109,7 +92,9 @@ export const SearchContextProvider = ({ children }) => {
                 description={result.description}
                 publisherUrl={result.publisherUrl}
                 packageUrl={result.packageUrl}
-                processing={isProcessing(result.packageName)}
+                processing={processing.some(
+                  (pkg) => pkg === result.packageName
+                )}
                 installed={result.installed}
               />
             )}
