@@ -1,113 +1,59 @@
 import { packages } from "./packages";
 import PkgCard from "./pkg-card/PkgCard";
 
+const categories = [
+  { id: "development", label: "Development", gradient: "gradient-a" },
+  { id: "internet", label: "Internet", gradient: "gradient-b" },
+  { id: "work", label: "Work", gradient: "gradient-c" },
+  { id: "utils", label: "Utils", gradient: "gradient-d" },
+  { id: "games", label: "Games", gradient: "gradient-e" },
+  { id: "music-and-video", label: "Music and Video", gradient: "gradient-f" },
+];
+
 export default function Homepage() {
+  const scrollToCategory = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <div className="homepage">
       <section className="categories top-section">
         <span className="title">Categories</span>
-
         <div className="packages-list">
-          <button className="category-button button">Development</button>
-          <button className="category-button button">Internet</button>
-          <button className="category-button button">Work</button>
-          <button className="category-button button">Utils</button>
-          <button className="category-button button">Games</button>
-          <button className="category-button button">Music and Video</button>
+          {categories.map(({ id, label, gradient }) => (
+            <button
+              key={id}
+              className={`category-button button gradient ${gradient}`}
+              onClick={() => scrollToCategory(id)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </section>
 
-      <section>
-        <span className="title">Development</span>
-        <div className="packages-list">
-          {packages &&
-            packages
-              .filter((p) => p.category === "development")
-              .map((p) => (
-                <PkgCard
-                  packageName={p.packageName}
-                  packageDescription={p.packageDescription}
-                />
-              ))}
-        </div>
-      </section>
-
-
-      <section>
-        <span className="title">Internet</span>
-        <div className="packages-list">
-          {packages &&
-            packages
-              .filter((p) => p.category === "internet")
-              .map((p) => (
-                <PkgCard
-                  packageName={p.packageName}
-                  packageDescription={p.packageDescription}
-                />
-              ))}
-        </div>
-      </section>
-
-
-      <section>
-        <span className="title">Work</span>
-        <div className="packages-list">
-          {packages &&
-            packages
-              .filter((p) => p.category === "work")
-              .map((p) => (
-                <PkgCard
-                  packageName={p.packageName}
-                  packageDescription={p.packageDescription}
-                />
-              ))}
-        </div>
-      </section>
-
-      <section>
-        <span className="title">Utils</span>
-        <div className="packages-list">
-          {packages &&
-            packages
-              .filter((p) => p.category === "utils")
-              .map((p) => (
-                <PkgCard
-                  packageName={p.packageName}
-                  packageDescription={p.packageDescription}
-                />
-              ))}
-        </div>
-      </section>
-
-      <section>
-        <span className="title">Games</span>
-        <div className="packages-list">
-          {packages &&
-            packages
-              .filter((p) => p.category === "games")
-              .map((p) => (
-                <PkgCard
-                  packageName={p.packageName}
-                  packageDescription={p.packageDescription}
-                />
-              ))}
-        </div>
-      </section>
-
-      <section>
-        <span className="title">Music and Video</span>
-        <div className="packages-list">
-          {packages &&
-            packages
-              .filter((p) => p.category === "music and video")
-              .map((p) => (
-                <PkgCard
-                  packageName={p.packageName}
-                  packageDescription={p.packageDescription}
-                />
-              ))}
-        </div>
-      </section>
+      {categories.map(({ id, label }) => (
+        <section key={id} id={id}>
+          <span className="title">{label}</span>
+          <div className="packages-list">
+            {packages &&
+              packages
+                .filter(
+                  (p) => p.category.replace(/\s+/g, "-").toLowerCase() === id
+                )
+                .map((p) => (
+                  <PkgCard
+                    key={p.packageName}
+                    packageName={p.packageName}
+                    packageDescription={p.packageDescription}
+                  />
+                ))}
+          </div>
+        </section>
+      ))}
     </div>
   );
 }

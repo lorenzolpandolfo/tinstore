@@ -13,6 +13,24 @@
 
   --primary-font-color: white;
   --secondary-font-color: #a7a7a7;
+
+  --gradient-a-start: #28AA6E;
+  --gradient-a-end: #134e33;
+
+  --gradient-b-start: #DB6665;
+  --gradient-b-end: #9c1815;
+
+  --gradient-c-start: #1A5FB4;
+  --gradient-c-end: #0e1681;
+
+  --gradient-d-start: #836995;
+  --gradient-d-end: #9e2584;
+
+  --gradient-e-start: #FE8035;
+  --gradient-e-end: #c92f14;
+
+  --gradient-f-start: #3F384C;
+  --gradient-f-end: #272657;
 }
 
 body {

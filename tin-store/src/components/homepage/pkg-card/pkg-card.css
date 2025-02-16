@@ -25,7 +25,6 @@
 
 .category-button {
     margin: 2px;
-    display: flex;
     align-items: center;
     justify-content: center;
     width: 200px;
@@ -45,7 +44,6 @@ section {
         font-weight: 600;
         margin-bottom: 15px;
     }
-    
 }
 
 .packages-list {
@@ -54,3 +52,15 @@ section {
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.gradient {
+    background: linear-gradient(135deg, var(--start-color), var(--end-color));
+    background-size: 101% 101%;
+}
+
+.gradient-a { --start-color: var(--gradient-a-start); --end-color: var(--gradient-a-end); }
+.gradient-b { --start-color: var(--gradient-b-start); --end-color: var(--gradient-b-end); }
+.gradient-c { --start-color: var(--gradient-c-start); --end-color: var(--gradient-c-end); }
+.gradient-d { --start-color: var(--gradient-d-start); --end-color: var(--gradient-d-end); }
+.gradient-e { --start-color: var(--gradient-e-start); --end-color: var(--gradient-e-end); }
+.gradient-f { --start-color: var(--gradient-f-start); --end-color: var(--gradient-f-end); }
