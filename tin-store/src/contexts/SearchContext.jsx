@@ -7,24 +7,35 @@ const SearchContext = createContext();
 
 export const SearchContextProvider = ({ children }) => {
   const [search, setSearch] = useState("");
-  const { setFinalResults } = useContextResults();
+  const [localResults, setLocalResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const { finalResults, setFinalResults } = useContextResults();
   const { processing } = useProcessingContext();
 
   const handleSearch = async (packageName) => {
     setSearch(packageName);
+    setLoading(true);
+    setError("");
 
-    const searchResults = await handleSearchIn(packageName);
+    try {
+      const searchResults = await handleSearchIn(packageName);
 
-    if (!searchResults || searchResults.length === 0) {
-      console.log("no results");
-      setFinalResults([]);
+      if (!searchResults || searchResults.length === 0) {
+        console.log("No results found");
+        setLocalResults([]);
+        setFinalResults([]);
+        return;
+      }
+
+      setLocalResults(searchResults);
+    } catch (err) {
+      console.error("Error during search:", err);
+      setError("Failed to fetch results");
+    } finally {
+      setLoading(false);
     }
-
-    const sortedPkgs = sortResults(searchResults, packageName);
-
-    const finalPkgs = await createPackageComponents(sortedPkgs);
-
-    setFinalResults(finalPkgs);
   };
 
   const handleSearchIn = async (packageName) => {
@@ -34,22 +45,17 @@ export const SearchContextProvider = ({ children }) => {
       const packageData = await window.electron.searchPackage(packageName);
       if (packageData?.cached) return packageData.cached;
 
-      return packageData.error
-        ? false
-        : packageData.message
-        ? false
-        : packageData;
+      return packageData.error || packageData.message ? [] : packageData;
     } catch (err) {
-      console.log(err);
+      console.error("Error searching packages:", err);
       return [];
     }
   };
 
-  const sortResults = (results, packageName) => {
-    console.log("Reordenando lista de pacotes. Busca:", packageName);
-    const lowerCasePackageName = packageName.toLowerCase();
+  const sortedResults = useMemo(() => {
+    const lowerCasePackageName = search.toLowerCase();
 
-    return [...results].sort((a, b) => {
+    return [...localResults].sort((a, b) => {
       const aPackageName = a.packageName?.toLowerCase() || "";
       const bPackageName = b.packageName?.toLowerCase() || "";
 
@@ -71,47 +77,58 @@ export const SearchContextProvider = ({ children }) => {
         return 1;
       if (aMatches !== bMatches) return aMatches ? -1 : 1;
       if (aHasAllFields !== bHasAllFields) return aHasAllFields ? -1 : 1;
+
       return 0;
     });
+  }, [search, localResults, processing]); // Dependências: search, localResults, processing
+
+  const isProcessing = (packageName) => {
+    return processing.some((pkg) => pkg === packageName);
   };
 
-  const createPackageComponents = async (sortedResults) => {
-    try {
-      const resultsInCache = await window.electron.checkPackagesInCache(
-        sortedResults
-      );
-      const packagesToRender =
-        resultsInCache?.length > 0 ? resultsInCache : sortedResults;
+  useEffect(() => {
+    const createPackageComponents = async () => {
+      try {
+        const resultsAfterCacheCheck =
+          await window.electron.checkPackagesInCache(sortedResults);
+        const packagesToRender =
+          resultsAfterCacheCheck?.length > 0
+            ? resultsAfterCacheCheck
+            : sortedResults;
 
-      return packagesToRender.map((result, index) => (
-        <div key={index} className="app-container">
-          {result.message ? (
-            <p>{result.message}</p>
-          ) : (
-            <AppPackage
-              packageName={result.packageName}
-              version={result.version}
-              packageId={result.packageId}
-              publisher={result.publisher}
-              description={result.description}
-              publisherUrl={result.publisherUrl}
-              packageUrl={result.packageUrl}
-              processing={processing.some((pkg) => pkg === search)}
-              installed={result.installed}
-            />
-          )}
-        </div>
-      ));
-    } catch (error) {
-      console.error("Erro ao verificar pacotes:", error);
-      return [];
-    }
-  };
+        const list = packagesToRender.map((result, index) => (
+          <div key={index} className="app-container">
+            {result.message ? (
+              <p>{result.message}</p>
+            ) : (
+              <AppPackage
+                packageName={result.packageName}
+                version={result.version}
+                packageId={result.packageId}
+                publisher={result.publisher}
+                description={result.description}
+                publisherUrl={result.publisherUrl}
+                packageUrl={result.packageUrl}
+                processing={isProcessing(result.packageName)}
+                installed={result.installed}
+              />
+            )}
+          </div>
+        ));
 
-  useEffect(() => handleSearch(search), [processing])
+        setFinalResults(list);
+      } catch (error) {
+        console.error("Erro ao verificar pacotes:", error);
+      }
+    };
+
+    createPackageComponents();
+  }, [sortedResults]); // Dependência: sortedResults
 
   return (
-    <SearchContext.Provider value={{ search, setSearch, handleSearch }}>
+    <SearchContext.Provider
+      value={{ search, setSearch, handleSearch, loading, error }}
+    >
       {children}
     </SearchContext.Provider>
   );
