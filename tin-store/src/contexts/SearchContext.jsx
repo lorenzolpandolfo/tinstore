@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useMemo } from "react";
+import { createContext, useState, useContext, useMemo, useEffect } from "react";
 import { useContextResults } from "./ResultsContext";
 import AppPackage from "../components/app-package/AppPackage";
 import { useProcessingContext } from "./ProcessingContext";
@@ -96,9 +96,7 @@ export const SearchContextProvider = ({ children }) => {
               description={result.description}
               publisherUrl={result.publisherUrl}
               packageUrl={result.packageUrl}
-              processing={processing.some(
-                (pkg) => pkg.packageName === p.packageName
-              )}
+              processing={processing.some((pkg) => pkg === search)}
               installed={result.installed}
             />
           )}
@@ -109,6 +107,8 @@ export const SearchContextProvider = ({ children }) => {
       return [];
     }
   };
+
+  useEffect(() => handleSearch(search), [processing])
 
   return (
     <SearchContext.Provider value={{ search, setSearch, handleSearch }}>
