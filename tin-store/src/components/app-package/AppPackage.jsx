@@ -24,12 +24,18 @@ export default function AppPackage({
 
   const handlePackageInstall = async () => {
     alert(packageName + " will be installed.");
-    window.electron.runCommand("winget install " + packageId, {packageId, packageName});
+    window.electron.runCommand("winget install " + packageId, {
+      packageId,
+      packageName,
+    });
   };
 
   const handlePackageUninstall = async () => {
     alert(packageName + " will be uninstalled.");
-    window.electron.runCommand("winget uninstall " + packageId, {packageId, packageName});
+    window.electron.runCommand("winget uninstall " + packageId, {
+      packageId,
+      packageName,
+    });
   };
 
   const normalizeString = (str) => {
@@ -37,7 +43,8 @@ export default function AppPackage({
     return str
       .toLowerCase()
       .trim()
-      .replace(/[-_]/g, " ")
+      .replace(/[_]/g, " ")
+      .replace("-", "")
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
   };
@@ -47,7 +54,6 @@ export default function AppPackage({
   const lowerPackageName = normalizeString(fmt_packageName);
 
   const packageNameParts = lowerPackageName.split(" ");
-
   const isVerified = packageNameParts.some(
     (part) =>
       (lowerPackageUrl && lowerPackageUrl.includes(part)) ||
@@ -104,12 +110,12 @@ export default function AppPackage({
       </div>
       <div className="app-buttons">
         {installed && !processing && (
-                    <span
-                    className="button app-package-uninstall"
-                    onClick={() => handlePackageUninstall()}
-                  >
-                    Uninstall
-                  </span>
+          <span
+            className="button app-package-uninstall"
+            onClick={() => handlePackageUninstall()}
+          >
+            Uninstall
+          </span>
         )}
         {installed && processing && (
           <span className="app-package-installing">Uninstalling...</span>

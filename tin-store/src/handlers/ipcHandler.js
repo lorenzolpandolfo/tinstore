@@ -10,7 +10,19 @@ import {
 import { exec } from "child_process";
 import { searchPackage } from "../services/packageSearchService.js";
 import { githubToken, loadKey, saveKey } from "../utils/tokenUtils.js";
-import { CACHE_FILE_PATH } from "../config/cachePath.js";
+
+const isInstalled = (pkg) => {
+  return new Promise((resolve, reject) => {
+    const command = `winget list ${pkg}`;
+
+    exec(command, (error, stdout, stderr) => {
+      if (error || stderr) {
+        return resolve(null);
+      }
+      resolve(stdout.toLowerCase().includes(pkg.toLowerCase()));
+    });
+  });
+};
 
 export const registerHandlers = (win) => {
   ipcMain.on("cache-generate-process", () => {
@@ -53,9 +65,32 @@ export const registerHandlers = (win) => {
   ipcMain.on("run-command", (event, command, pkg) => {
     event.sender.send("installation-status-change", pkg.packageName);
 
+    const installing = command.includes("winget install ");
+    const uninstalling = command.includes("winget uninstall ");
+
     exec(command, async (error, stdout, stderr) => {
       if (error || stderr) {
         event.sender.send("installation-status-change", pkg.packageName);
+
+        const alreadyInstalled = await isInstalled(pkg.packageId);
+
+        if (installing && alreadyInstalled) {
+          dialog.showMessageBox({
+            type: "error",
+            title: "Installation error",
+            message: "package already installed",
+          });
+          return;
+        }
+
+        if (uninstalling && !alreadyInstalled) {
+          dialog.showMessageBox({
+            type: "error",
+            title: "Installation error",
+            message: "package already uninstalled",
+          });
+          return;
+        }
 
         dialog.showMessageBox({
           type: "error",
@@ -65,7 +100,7 @@ export const registerHandlers = (win) => {
         return;
       }
 
-      if (command.includes("winget uninstall ")) {
+      if (uninstalling) {
         await removePackage(pkg.packageId);
 
         dialog.showMessageBox({
@@ -75,7 +110,7 @@ export const registerHandlers = (win) => {
         });
       }
 
-      if (command.includes("winget install ")) {
+      if (installing) {
         await addPackage(pkg);
 
         dialog.showMessageBox({
