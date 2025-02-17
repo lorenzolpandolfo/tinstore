@@ -73,22 +73,12 @@ export const registerHandlers = (win) => {
         event.sender.send("installation-status-change", pkg.packageName);
 
         const alreadyInstalled = await isInstalled(pkg.packageId);
+        const desyncedCache =
+          (installing && alreadyInstalled) ||
+          (uninstalling && !alreadyInstalled);
 
-        if (installing && alreadyInstalled) {
-          dialog.showMessageBox({
-            type: "error",
-            title: "Installation error",
-            message: "package already installed",
-          });
-          return;
-        }
-
-        if (uninstalling && !alreadyInstalled) {
-          dialog.showMessageBox({
-            type: "error",
-            title: "Installation error",
-            message: "package already uninstalled",
-          });
+        if (desyncedCache) {
+          regenerateCache(win);
           return;
         }
 
