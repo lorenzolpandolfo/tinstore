@@ -1,6 +1,21 @@
+import { useEffect, useState } from "react";
 import "./menu-window.css";
 
 export default function MenuWindow() {
+  const [token, setToken] = useState("");
+
+  const handleChangeToken = async () => {
+    window.electron.changeToken(token);
+  };
+
+  useEffect(() => {
+    const fetchCurrentToken = async () => {
+      const currentToken = await window.electron.getToken();
+      setToken(currentToken);
+    };
+    fetchCurrentToken();
+  }, []);
+
   return (
     <div className="menu-container">
       <div className="menu-window">
@@ -11,8 +26,17 @@ export default function MenuWindow() {
           <div className="auth section">
             <span className="subtitle">Authentication</span>
             <div className="label">
-              <input type="text" name="api-key" id="api-key" />
-              <button className="button">Confirm</button>
+              <input
+                type="text"
+                name="api-key"
+                id="api-key"
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
+                spellCheck={false}
+              />
+              <button className="button" onClick={handleChangeToken}>
+                Confirm
+              </button>
             </div>
             <span className="description">
               The GitHub Personal Access Token is required to access the Winget

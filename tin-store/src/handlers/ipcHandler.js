@@ -8,7 +8,7 @@ import {
 } from "../services/packageCacheService.js";
 import { exec } from "child_process";
 import { searchPackage } from "../services/packageSearchService.js";
-import { GITHUB_TOKEN } from "../../secret.js";
+import { githubToken, loadKey, saveKey } from "../utils/tokenUtils.js";
 
 export const registerHandlers = (win) => {
   ipcMain.on("cache-generate-process", () => {
@@ -84,7 +84,16 @@ export const registerHandlers = (win) => {
   });
 
   ipcMain.handle("search-package", async (event, packageName) => {
-    const result = await searchPackage(packageName, GITHUB_TOKEN);
+    const result = await searchPackage(packageName, await githubToken);
     return result;
+  });
+
+  ipcMain.handle("change-token", async (event, token) => {
+    await saveKey(token);
+    await loadKey();
+  });
+
+  ipcMain.handle("get-token", async () => {
+    return await loadKey();
   });
 };

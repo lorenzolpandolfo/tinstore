@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./menu-modal.css";
-import MenuWindow from "./menu-window/menu-window";
+import MenuWindow from "./menu-window/MenuWindow";
 
 export default function MenuModal() {
   const handleOpenMenu = () => {
