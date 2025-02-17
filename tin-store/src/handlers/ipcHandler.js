@@ -24,12 +24,13 @@ const isInstalled = (pkg) => {
   });
 };
 
-const createSuccessProcessResponse = (installed) => {
+const createSuccessProcessResponse = (installed, wasDesynced) => {
   dialog.showMessageBox({
     type: "info",
     title: "Process complete",
-    message: `The ${installed ? "install" : "uninstall"} process was successful`,
-  });
+    message: `The ${installed ? "installation" : "uninstallation"} process was successful.`
+      + (wasDesynced ? "\nThe cache is being updated due to a desynced package. Some displayed packages statuses may be incorrect.\nOnce complete, try searching for the package again." : ""),
+  })
 }
 
 export const registerHandlers = (win) => {
@@ -87,7 +88,7 @@ export const registerHandlers = (win) => {
 
         if (desyncedCache) {
           await regenerateCache(win);
-          createSuccessProcessResponse(true);
+          createSuccessProcessResponse(installing, true)
           return;
         }
 
@@ -99,7 +100,7 @@ export const registerHandlers = (win) => {
         return;
       }
 
-      createSuccessProcessResponse(installing)
+      createSuccessProcessResponse(installing, false)
       event.sender.send("installation-status-change", pkg.packageName);
     });
   });

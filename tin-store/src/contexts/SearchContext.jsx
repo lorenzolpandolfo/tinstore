@@ -15,7 +15,6 @@ export const SearchContextProvider = ({ children }) => {
 
   const { setFinalResults } = useContextResults();
   const { processing } = useProcessingContext();
-  const { generatingCache } = useContextCache();
 
   const handleSearch = async (packageName) => {
     setSearch(packageName);
@@ -110,7 +109,7 @@ export const SearchContextProvider = ({ children }) => {
     };
 
     createPackageComponents();
-  }, [sortedResults, processing, generatingCache]);
+  }, [sortedResults, processing]);
 
   return (
     <SearchContext.Provider

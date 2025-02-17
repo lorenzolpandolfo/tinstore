@@ -27,10 +27,6 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.send("cache-regenerate");
   },
 
-  removeInstallationListener: (callback) => {
-    ipcRenderer.removeListener("installation-status-change", callback);
-  },
-
   checkPackagesInCache: (packages) =>
     ipcRenderer.invoke("check-packages-in-cache", packages),
 
