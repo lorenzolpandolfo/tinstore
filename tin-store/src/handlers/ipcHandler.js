@@ -24,6 +24,14 @@ const isInstalled = (pkg) => {
   });
 };
 
+const createSuccessProcessResponse = (installed) => {
+  dialog.showMessageBox({
+    type: "info",
+    title: "Process complete",
+    message: `The ${installed ? "install" : "uninstall"} process was successful`,
+  });
+}
+
 export const registerHandlers = (win) => {
   ipcMain.on("cache-generate-process", () => {
     handleCache(win);
@@ -78,7 +86,8 @@ export const registerHandlers = (win) => {
           (uninstalling && !alreadyInstalled);
 
         if (desyncedCache) {
-          regenerateCache(win);
+          await regenerateCache(win);
+          createSuccessProcessResponse(true);
           return;
         }
 
@@ -90,26 +99,7 @@ export const registerHandlers = (win) => {
         return;
       }
 
-      if (uninstalling) {
-        await removePackage(pkg.packageId);
-
-        dialog.showMessageBox({
-          type: "info",
-          title: "Uninstall complete",
-          message: "The uninstall process was successful",
-        });
-      }
-
-      if (installing) {
-        await addPackage(pkg);
-
-        dialog.showMessageBox({
-          type: "info",
-          title: "Installation complete",
-          message: "The installation process was successful",
-        });
-      }
-
+      createSuccessProcessResponse(installing)
       event.sender.send("installation-status-change", pkg.packageName);
     });
   });
