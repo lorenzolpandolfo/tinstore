@@ -174,9 +174,9 @@ export const packages = [
     category: "games",
   },
   {
-    packageName: "Lutris",
+    packageName: "Epic Games Launcher",
     packageDescription:
-      "An open-source gaming platform for managing and playing games.",
+      "Epic Games Launcher for the Epic Games Store and Unreal Engine.",
     category: "games",
   },
 
@@ -212,7 +212,7 @@ export const packages = [
   {
     packageName: "Kodi",
     packageDescription:
-      "A a free and feature-rich media center for various operating systems, consoles and TVs.",
+      "A a free and feature-rich media center for various operating systems.",
     category: "music and video",
   },
 ];

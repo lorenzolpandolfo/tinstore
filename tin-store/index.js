@@ -5,11 +5,13 @@ import "./src/handlers/ipcHandler.js";
 import { registerHandlers } from "./src/handlers/ipcHandler.js";
 
 let win;
+const iconPath = path.join(app.getAppPath(), "src", "assets", "Logo.png");
 
 const createWindow = () => {
   win = new BrowserWindow({
     width: 800,
     height: 600,
+    icon: iconPath,
     webPreferences: {
       preload: path.join(app.getAppPath(), "preload.js"),
       nodeIntegration: false,
