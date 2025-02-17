@@ -84,7 +84,10 @@ export const registerHandlers = (win) => {
   });
 
   ipcMain.handle("search-package", async (event, packageName) => {
-    const result = await searchPackage(packageName, await githubToken);
+    const result = await searchPackage(
+      packageName,
+      (await githubToken) || (await loadKey())
+    );
     return result;
   });
 
