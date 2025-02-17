@@ -4,15 +4,21 @@ import {
   findPackageById,
   getInMemoryCacheData,
   handleCache,
+  regenerateCache,
   removePackage,
 } from "../services/packageCacheService.js";
 import { exec } from "child_process";
 import { searchPackage } from "../services/packageSearchService.js";
 import { githubToken, loadKey, saveKey } from "../utils/tokenUtils.js";
+import { CACHE_FILE_PATH } from "../config/cachePath.js";
 
 export const registerHandlers = (win) => {
   ipcMain.on("cache-generate-process", () => {
     handleCache(win);
+  });
+
+  ipcMain.on("cache-regenerate", async () => {
+    regenerateCache(win);
   });
 
   ipcMain.handle("get-packages-in-cache", async () => {

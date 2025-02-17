@@ -3,14 +3,14 @@ import { dialog } from "electron";
 
 import { readCacheData, writeCacheData } from "../utils/fileUtils.js";
 import { CACHE_DIR, CACHE_FILE_PATH } from "../config/cachePath.js";
-import { exec } from "child_process"
-import util from "util"
+import { exec } from "child_process";
+import util from "util";
 
 let inMemoryCacheData;
 
 export const getInMemoryCacheData = async () => {
   return inMemoryCacheData;
-}
+};
 
 export const updateCacheData = async () => {
   const cacheData = await readCacheData();
@@ -90,12 +90,12 @@ export const removePackage = async (packageName) => {
 };
 
 export const handleCache = async (win) => {
-    if (!hasCache()) {
-      createCache(win);
-    } else {
-      await updateCacheData();
-    }
-  };
+  if (!hasCache()) {
+    createCache(win);
+  } else {
+    await updateCacheData();
+  }
+};
 
 export const hasCache = () => {
   return fs.existsSync(CACHE_DIR) && fs.existsSync(CACHE_FILE_PATH);
@@ -128,5 +128,19 @@ export const createCache = async (win) => {
     win.webContents.send("cache-generate-modal", false);
     console.log("[Cache] Trying to loading just generated cache");
     await updateCacheData();
+  }
+};
+
+export const regenerateCache = async (win) => {
+  try {
+    await fs.promises.access(CACHE_FILE_PATH).catch(() => null);
+    await fs.promises.unlink(CACHE_FILE_PATH).catch(() => {});
+    console.log(
+      `[Rebuild Cache] Arquivo de cache removido: ${CACHE_FILE_PATH}`
+    );
+  } catch (err) {
+    console.log("[Rebuild Cache] Erro ao tentar remover o cache:", err);
+  } finally {
+    handleCache(win);
   }
 };

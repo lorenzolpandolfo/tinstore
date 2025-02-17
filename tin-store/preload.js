@@ -23,6 +23,10 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.send("cache-generate-process");
   },
 
+  regenerateCache: () => {
+    ipcRenderer.send("cache-regenerate");
+  },
+
   removeInstallationListener: (callback) => {
     ipcRenderer.removeListener("installation-status-change", callback);
   },

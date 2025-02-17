@@ -8,6 +8,10 @@ export default function MenuWindow() {
     window.electron.changeToken(token);
   };
 
+  const handleRebuildCache = async () => {
+    window.electron.regenerateCache();
+  };
+
   useEffect(() => {
     const fetchCurrentToken = async () => {
       const currentToken = await window.electron.getToken();
@@ -60,7 +64,9 @@ export default function MenuWindow() {
                 Manually recreate the cache to ensure the latest package data is
                 available.
               </span>
-              <button className="button">Rebuild</button>
+              <button className="button" onClick={handleRebuildCache}>
+                Rebuild
+              </button>
             </div>
           </div>
         </div>
