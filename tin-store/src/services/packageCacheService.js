@@ -61,7 +61,8 @@ export const addPackage = async (pkg) => {
   return true;
 };
 
-export const removePackage = async (packageName) => {
+export const removePackage = async (pkg) => {
+  const packageId = pkg.packageId;
   let jsonData = await readCacheData();
   if (!jsonData || !jsonData.Sources[0]?.Packages) {
     console.error("[Error] Estrutura do cache inválida.");
@@ -72,10 +73,10 @@ export const removePackage = async (packageName) => {
 
   // Encontra o índice do pacote para remover
   const packageIndex = packages.findIndex(
-    (pkg) => pkg.PackageIdentifier === packageName
+    (pkg) => pkg.PackageIdentifier === packageId
   );
   if (packageIndex === -1) {
-    console.log(`[Warn] Pacote '${packageName}' não encontrado no cache.`);
+    console.log(`[Warn] Pacote '${packageId}' nao encontrado no cache.`);
     return false;
   }
 
@@ -84,7 +85,7 @@ export const removePackage = async (packageName) => {
 
   // Escreve o JSON atualizado no arquivo
   await writeCacheData(jsonData);
-  console.log(`[Info] Pacote '${packageName}' removido do cache.`);
+  console.log(`[Info] Pacote '${packageId}' removido do cache.`);
   await updateCacheData();
   return true;
 };
@@ -94,6 +95,7 @@ export const handleCache = async (win) => {
     createCache(win);
   } else {
     await updateCacheData();
+    // win.webContents.send("cache-generate-modal", true);
   }
 };
 
@@ -134,7 +136,7 @@ export const createCache = async (win) => {
 export const regenerateCache = async (win) => {
   try {
     await fs.promises.access(CACHE_FILE_PATH).catch(() => null);
-    await fs.promises.unlink(CACHE_FILE_PATH).catch(() => {});
+    await fs.promises.unlink(CACHE_FILE_PATH).catch(() => { });
     console.log(
       `[Rebuild Cache] Arquivo de cache removido: ${CACHE_FILE_PATH}`
     );

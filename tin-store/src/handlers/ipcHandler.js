@@ -101,6 +101,9 @@ export const registerHandlers = (win) => {
       }
 
       createSuccessProcessResponse(installing, false)
+
+      installing ? await addPackage(pkg) : await removePackage(pkg);
+
       event.sender.send("installation-status-change", pkg.packageName);
     });
   });

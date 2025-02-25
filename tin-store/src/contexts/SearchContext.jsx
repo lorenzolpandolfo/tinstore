@@ -70,6 +70,12 @@ export const SearchContextProvider = ({ children }) => {
     });
   }, [localResults]);
 
+  const isProcessing = (result) => {
+    return processing.some(
+      (pkg) => pkg === result.packageName
+    )
+  }
+
   useEffect(() => {
     const createPackageComponents = async () => {
       try {
@@ -93,9 +99,7 @@ export const SearchContextProvider = ({ children }) => {
                 description={result.description}
                 publisherUrl={result.publisherUrl}
                 packageUrl={result.packageUrl}
-                processing={processing.some(
-                  (pkg) => pkg === result.packageName
-                )}
+                processing={isProcessing(result)}
                 installed={result.installed}
               />
             )}
