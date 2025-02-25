@@ -2,7 +2,6 @@ import { createContext, useState, useContext, useMemo, useEffect } from "react";
 import { useContextResults } from "./ResultsContext";
 import AppPackage from "../components/app-package/AppPackage";
 import { useProcessingContext } from "./ProcessingContext";
-import { useContextCache } from "./CacheContext";
 import { handlePackageSearch } from "../services/packageSearchService";
 
 const SearchContext = createContext();
@@ -43,7 +42,8 @@ export const SearchContextProvider = ({ children }) => {
   const sortedResults = useMemo(() => {
     const lowerCasePackageName = search.toLowerCase();
 
-    return [...localResults].sort((a, b) => {
+    return [...localResults]
+    .sort((a, b) => {
       const aPackageName = a.packageName?.toLowerCase() || "";
       const bPackageName = b.packageName?.toLowerCase() || "";
 

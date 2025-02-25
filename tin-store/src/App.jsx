@@ -10,6 +10,8 @@ import AppPackage from "./components/app-package/AppPackage.jsx";
 import Homepage from "./components/homepage/Homepage.jsx";
 import { useProcessingContext } from "./contexts/ProcessingContext.jsx";
 import MenuModal from "./components/menu-modal/MenuModal.jsx";
+import { useContextSearch } from "./contexts/SearchContext.jsx";
+import LoadingModal from "./components/loading-modal/LoadingModal.jsx";
 
 const formatPackageIdentifier = (pkgId) => {
   return pkgId.replaceAll(".", " ");
@@ -23,6 +25,7 @@ const App = () => {
   const { contextSection } = useContextSection();
   const { finalResults } = useContextResults();
   const { processing } = useProcessingContext();
+  const { loading } = useContextSearch();
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -68,7 +71,13 @@ const App = () => {
       {contextSection === "explore" && (
         <>
           <SearchBar />
-          {finalResults.length > 0 ? finalResults : <Homepage />}
+          {loading ? (
+            <LoadingModal />
+          ) : finalResults.length > 0 ? (
+            finalResults
+          ) : (
+            <Homepage />
+          )}
         </>
       )}
 

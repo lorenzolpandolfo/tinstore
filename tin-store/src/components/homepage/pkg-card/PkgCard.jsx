@@ -13,7 +13,6 @@ export default function PkgCard({ packageName, packageDescription }) {
 
   const handleSearchIn = () => {
     handleSearch(packageName);
-    handleScrollToTop();
   };
 
   return (

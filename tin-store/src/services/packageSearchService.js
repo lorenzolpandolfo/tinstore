@@ -47,30 +47,30 @@ function deduplicatePackages(packageData) {
   const seenPackages = new Map();
 
   packageData.forEach((pkg) => {
-    const existingPackage = seenPackages.get(pkg.packageName);
-    if (
-      !existingPackage ||
-      compareVersions(pkg.version, existingPackage.version) > 0
-    ) {
-      seenPackages.set(pkg.packageName, pkg);
+    const existingPackage = seenPackages.get(pkg.packageId);
+
+    const dataCount = [
+      pkg.publisher,
+      pkg.description,
+      pkg.publisherUrl,
+      pkg.packageUrl,
+    ].filter(Boolean).length;
+    const existingDataCount = existingPackage
+      ? [
+          existingPackage.publisher,
+          existingPackage.description,
+          existingPackage.publisherUrl,
+          existingPackage.packageUrl,
+        ].filter(Boolean).length
+      : 0;
+
+    if (!existingPackage || dataCount > existingDataCount) {
+      seenPackages.set(pkg.packageId, pkg);
     }
   });
 
-  return Array.from(seenPackages.values());
+  return [...seenPackages.values()];
 }
-
-const compareVersions = (version1, version2) => {
-  const v1 = version1.split(".").map(Number);
-  const v2 = version2.split(".").map(Number);
-
-  for (let i = 0; i < Math.max(v1.length, v2.length); i++) {
-    const num1 = v1[i] || 0;
-    const num2 = v2[i] || 0;
-    if (num1 > num2) return 1;
-    if (num1 < num2) return -1;
-  }
-  return 0;
-};
 
 export const handlePackageSearch = async (packageName) => {
   if (!packageName) return [];

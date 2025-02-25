@@ -1,0 +1,43 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+}
+
+body {
+    margin: 0 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    width: 35px;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.help-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.steps-list {
+    margin: 10px 60px;
+}
+
+li {
+    margin: 5px;
+}
+
+section {
+    background-color: var(--secondary-background-color);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+}

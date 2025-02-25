@@ -6,6 +6,7 @@ import { registerHandlers } from "./src/handlers/ipcHandler.js";
 
 let win;
 const iconPath = path.join(app.getAppPath(), "src", "assets", "Logo.png");
+const appName = "tinstore";
 
 const createWindow = () => {
   win = new BrowserWindow({
@@ -22,7 +23,7 @@ const createWindow = () => {
   win.loadURL("http://localhost:5173/");
 
   // adicionar em alguma versao 1.0.0
-  // Menu.setApplicationMenu(null);
+  Menu.setApplicationMenu(null);
 
   win.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url);
@@ -31,6 +32,7 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
+  app.setName(appName);
   createWindow();
   registerHandlers(win);
 });

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../src/index.css">
+  <link rel="stylesheet" href="help.css">
+  <title>Help | Tinstore</title>
+</head>
+
+<body>
+  <header class="help-header">
+    <img class="logo" src="../../src/assets/Logo.png" alt="logo">
+    <span class="title">Tinstore guide</span>
+  </header>
+  <section>
+    <h2 class="title">How to create a GitHub Personal Access Token</h2>
+    <div class="steps-list">
+      <ol>
+        <li>
+          <a href="https://github.com/settings/tokens/new" target="_blank">
+            Open GitHub's "New Token" page (classic)
+          </a>
+        </li>
+        <li>
+          <p>In the <strong>Note</strong> field, enter a name like <strong>"Tinstore Access Token"</strong> to
+            identify its purpose.</p>
+        </li>
+        <li>
+          <p>Set an <strong>expiration date</strong> according to your security preference (e.g., 30 or 90
+            days).
+          </p>
+        </li>
+        <li>
+          <p>Under <strong>Select scopes</strong>, enable the following permission:</p>
+          <ul class="steps-list">
+            <li><strong>read:packages</strong> – Required to access private repositories and package
+              registries.
+            </li>
+          </ul>
+        </li>
+        <li>
+          <p>In <strong>Tinstore</strong>, go to <strong>Settings → Authentication</strong> and paste the
+            copied
+            token in the input field.</p>
+        </li>
+        <li>
+          <p>Click <strong>Confirm</strong> to complete the authentication process.</p>
+        </li>
+      </ol>
+    </div>
+
+    <p>Once completed, you should be able to search for packages.</p>
+  </section>
+</body>
+
+</html>
