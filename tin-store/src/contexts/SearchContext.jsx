@@ -1,8 +1,10 @@
 import { createContext, useState, useContext, useMemo, useEffect } from "react";
-import { useContextResults } from "./ResultsContext";
 import AppPackage from "../components/app-package/AppPackage";
-import { useProcessingContext } from "./ProcessingContext";
 import { handlePackageSearch } from "../services/packageSearchService";
+
+import { useProcessingContext } from "./ProcessingContext";
+import { useContextResults } from "./ResultsContext";
+import { useContextCache } from "./CacheContext.jsx";
 
 const SearchContext = createContext();
 
@@ -14,6 +16,7 @@ export const SearchContextProvider = ({ children }) => {
 
   const { setFinalResults } = useContextResults();
   const { processing } = useProcessingContext();
+  const { generatingCache } = useContextCache();
 
   const handleSearch = async (packageName) => {
     setSearch(packageName);
@@ -43,31 +46,31 @@ export const SearchContextProvider = ({ children }) => {
     const lowerCasePackageName = search.toLowerCase();
 
     return [...localResults]
-    .sort((a, b) => {
-      const aPackageName = a.packageName?.toLowerCase() || "";
-      const bPackageName = b.packageName?.toLowerCase() || "";
+      .sort((a, b) => {
+        const aPackageName = a.packageName?.toLowerCase() || "";
+        const bPackageName = b.packageName?.toLowerCase() || "";
 
-      const aMatches = aPackageName.includes(lowerCasePackageName);
-      const bMatches = bPackageName.includes(lowerCasePackageName);
+        const aMatches = aPackageName.includes(lowerCasePackageName);
+        const bMatches = bPackageName.includes(lowerCasePackageName);
 
-      const aHasAllFields = a.description && a.publisher;
-      const bHasAllFields = b.description && b.publisher;
+        const aHasAllFields = a.description && a.publisher;
+        const bHasAllFields = b.description && b.publisher;
 
-      if (
-        aPackageName === lowerCasePackageName &&
-        bPackageName !== lowerCasePackageName
-      )
-        return -1;
-      if (
-        bPackageName === lowerCasePackageName &&
-        aPackageName !== lowerCasePackageName
-      )
-        return 1;
-      if (aMatches !== bMatches) return aMatches ? -1 : 1;
-      if (aHasAllFields !== bHasAllFields) return aHasAllFields ? -1 : 1;
+        if (
+          aPackageName === lowerCasePackageName &&
+          bPackageName !== lowerCasePackageName
+        )
+          return -1;
+        if (
+          bPackageName === lowerCasePackageName &&
+          aPackageName !== lowerCasePackageName
+        )
+          return 1;
+        if (aMatches !== bMatches) return aMatches ? -1 : 1;
+        if (aHasAllFields !== bHasAllFields) return aHasAllFields ? -1 : 1;
 
-      return 0;
-    });
+        return 0;
+      });
   }, [localResults]);
 
   const isProcessing = (result) => {
@@ -113,7 +116,7 @@ export const SearchContextProvider = ({ children }) => {
     };
 
     createPackageComponents();
-  }, [sortedResults, processing]);
+  }, [sortedResults, processing, generatingCache]);
 
   return (
     <SearchContext.Provider

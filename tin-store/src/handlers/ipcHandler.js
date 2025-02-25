@@ -29,7 +29,7 @@ const createSuccessProcessResponse = (installed, wasDesynced) => {
     type: "info",
     title: "Process complete",
     message: `The ${installed ? "installation" : "uninstallation"} process was successful.`
-      + (wasDesynced ? "\nThe cache is being updated due to a desynced package. Some displayed packages statuses may be incorrect.\nOnce complete, try searching for the package again." : ""),
+      + (wasDesynced ? "\nThe cache is being updated." : ""),
   })
 }
 

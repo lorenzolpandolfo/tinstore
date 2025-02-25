@@ -127,9 +127,9 @@ export const createCache = async (win) => {
       message: error.message,
     });
   } finally {
-    win.webContents.send("cache-generate-modal", false);
     console.log("[Cache] Trying to loading just generated cache");
     await updateCacheData();
+    win.webContents.send("cache-generate-modal", false);
   }
 };
 
