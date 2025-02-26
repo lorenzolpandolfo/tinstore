@@ -56,7 +56,7 @@ export default function MenuWindow() {
               <span className="description">
                 Don't have one yet?{" "}
                 <a
-                  href="/public/help/"
+                  href="./index.css"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

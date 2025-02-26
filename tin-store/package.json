@@ -3,12 +3,30 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && electron-builder",
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "electron ."
+  },
+  "build": {
+    "appId": "com.tinstore.tinstore",
+    "productName": "TinStore",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "dist-electron/**/*",
+      "dist/**/*",
+      "src/**/*",
+      "preload.js"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/Logo.png"
+    }
   },
   "dependencies": {
     "axios": "^1.7.9",
@@ -26,6 +44,7 @@
     "cross-env": "^7.0.3",
     "electron": "^34.1.0",
     "electron-builder": "^25.1.8",
+    "electron-vite": "^3.0.0",
     "eslint": "^9.19.0",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.0.0",

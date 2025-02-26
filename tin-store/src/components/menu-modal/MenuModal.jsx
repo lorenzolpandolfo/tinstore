@@ -23,7 +23,7 @@ export default function MenuModal() {
   return (
     <>
       <div onClick={toggleMenu} className="menu-modal button">
-        <img src="/src/assets/menu.svg" alt="menu" />
+        <img src="assets/menu.svg" alt="menu" />
       </div>
 
       {windowVisible && <MenuWindow />}
