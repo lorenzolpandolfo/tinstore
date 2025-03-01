@@ -27,7 +27,7 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "public/assets/logo.png"
+      "icon": "public/assets/logo.ico"
     }
   },
   "dependencies": {

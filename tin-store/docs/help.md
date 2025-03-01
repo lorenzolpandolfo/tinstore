@@ -4,8 +4,7 @@
 
 ### Steps:
 
-1. [Open GitHub's "New Token" page (classic)](https://github.com/settings/tokens/new)  
-   - Go to [GitHub](https://github.com/settings/tokens/new) to create a new personal access token.
+1. Open [GitHub's "New Token" page (classic)](https://github.com/settings/tokens/new)  
 
 2. In the **Note** field, enter a name like **"Tinstore Access Token"** to identify its purpose.
 

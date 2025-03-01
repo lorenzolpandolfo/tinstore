@@ -42,6 +42,7 @@ export default function MenuWindow() {
                   type="text"
                   name="api-key"
                   id="api-key"
+                  placeholder="Insert your token here"
                   value={token}
                   onChange={(e) => setToken(e.target.value)}
                   spellCheck={false}

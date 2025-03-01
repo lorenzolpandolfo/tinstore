@@ -19,7 +19,7 @@ export const loadKey = async () => {
         dialog.showMessageBox({
           type: "info",
           title: "Personal Access Token not found",
-          message: "You need to register your Github PAT in settings.",
+          message: "You need to register your Github Personal Access Token in settings.",
         });
 
         return "";
