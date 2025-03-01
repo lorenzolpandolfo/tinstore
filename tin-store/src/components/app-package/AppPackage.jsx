@@ -81,7 +81,7 @@ export default function AppPackage({
               title="Official source"
               className="verified-app-check"
               alt="verified app check"
-              src="src/assets/check.svg"
+              src="assets/check.svg"
             />
           )}
         </div>

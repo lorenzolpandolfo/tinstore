@@ -18,7 +18,7 @@ export default function InstallModal({ packages }) {
       title={`Processing${formatPackages(packages)}`}
       className="install-modal"
     >
-      <img src="src/assets/download.svg" alt="download icon" />
+      <img src="assets/download.svg" alt="download icon" />
     </div>
   );
 }

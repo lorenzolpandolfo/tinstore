@@ -1,14 +1,34 @@
 {
   "name": "tin-store",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "1.0.0",
+  "description": "Tinstore is a Microsoft Winget GUI made with Electron and React.",
+  "author": "Lorenzo Pandolfo",
+  "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && electron-builder",
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "electron ."
+  },
+  "build": {
+    "appId": "com.tinstore.tinstore",
+    "productName": "Tin Store",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "dist-electron/**/*",
+      "dist/**/*",
+      "src/**/*",
+      "preload.js"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "public/assets/logo.ico"
+    }
   },
   "dependencies": {
     "axios": "^1.7.9",
@@ -26,11 +46,13 @@
     "cross-env": "^7.0.3",
     "electron": "^34.1.0",
     "electron-builder": "^25.1.8",
+    "electron-vite": "^3.0.0",
     "eslint": "^9.19.0",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
-    "vite": "^6.1.0"
+    "vite": "^6.1.0",
+    "vite-plugin-static-copy": "^2.3.0"
   }
 }

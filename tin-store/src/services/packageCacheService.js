@@ -110,6 +110,10 @@ export const createCache = async (win) => {
   try {
     win.webContents.send("cache-generate-modal", true);
 
+    if (!fs.existsSync(CACHE_DIR)) {
+      fs.mkdirSync(CACHE_DIR, { recursive: true });
+    }
+
     const command = `cd "${CACHE_DIR}" && winget export --source winget -o installed-packages.json`;
     const { stderr } = await execPromise(command);
 

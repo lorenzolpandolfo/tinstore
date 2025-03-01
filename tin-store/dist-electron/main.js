@@ -1,12 +1,13 @@
 import { app, BrowserWindow, Menu, shell } from "electron";
 import path from "path";
 
-import "./src/handlers/ipcHandler.js";
-import { registerHandlers } from "./src/handlers/ipcHandler.js";
+import "../src/handlers/ipcHandler.js";
+import { registerHandlers } from "../src/handlers/ipcHandler.js";
 
 let win;
 const iconPath = path.join(app.getAppPath(), "src", "assets", "Logo.png");
-const appName = "tinstore";
+const appName = "Tinstore";
+const isDev = !app.isPackaged;
 
 const createWindow = () => {
   win = new BrowserWindow({
@@ -20,9 +21,12 @@ const createWindow = () => {
     },
   });
 
-  win.loadURL("http://localhost:5173/");
+  if (isDev) {
+    win.loadURL("http://localhost:5173/");
+  } else {
+    win.loadFile(path.join(app.getAppPath(), "dist", "index.html"));
+  }
 
-  // adicionar em alguma versao 1.0.0
   Menu.setApplicationMenu(null);
 
   win.webContents.setWindowOpenHandler((details) => {
