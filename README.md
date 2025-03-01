@@ -18,6 +18,7 @@ Key features:
 - Simple, clean, and modern interface
 
 ### Building from source
+The process below is only necessary if you're a developer and would like to build it from source. Otherwise, just download it from the releases page.
    ```bash
    git clone https://github.com/lorenzolpandolfo/tinstore.git
    cd tinstore/tin-store
