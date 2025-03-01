@@ -1,6 +1,9 @@
 # Tin Store
 Discover a new way to install applications on Windows.
 
+### Download
+[Download now](https://github.com/lorenzolpandolfo/tinstore/releases) the latest release.
+
 ### What is it?
 
 **TinStore** is an intuitive, easy-to-use app store for **Windows** that allows you to discover, install, and manage your favorite applications in one place. With TinStore, you can effortlessly install apps using Winget's package system and keep them updated with just a few clicks. It’s your one-stop-shop for all things apps on Windows.
