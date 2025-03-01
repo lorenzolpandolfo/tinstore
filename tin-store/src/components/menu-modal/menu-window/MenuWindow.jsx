@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import "./menu-window.css";
 import { useMenu } from "../../../contexts/MenuContext";
 
+const DOCS_URL = "https://github.com/lorenzolpandolfo/tinstore/tree/main/tin-store/docs/help.md";
+
 export default function MenuWindow() {
   const [token, setToken] = useState("");
   const { closeMenu } = useMenu();
@@ -56,7 +58,7 @@ export default function MenuWindow() {
               <span className="description">
                 Don't have one yet?{" "}
                 <a
-                  href="./index.css"
+                  href={DOCS_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
