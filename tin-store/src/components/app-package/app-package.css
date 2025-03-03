@@ -12,7 +12,17 @@
     align-items: start;
   
     background-color: var(--secondary-background-color);
+    animation: fadeIn 0.15s ease-in-out forwards;
   }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 .app-package-publisher {
     font-size: 15px;
@@ -101,4 +111,9 @@
 
 .verified-app-check {
   margin: 0 5px;
+  transition: scale 0.3s ease-in-out;
+}
+
+.verified-app-check:hover {
+  scale: 1.4;
 }
