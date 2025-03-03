@@ -6,7 +6,7 @@
     <a href="https://github.com/lorenzolpandolfo/tinstore/releases">
       <img src="./tin-store/public/assets/downloadBtn.svg" alt="Download" width="150"/>
     </a>
-</p>.
+</p>
 
 # Tin Store  
 ### The smarter way to install and manage apps on Windows  
