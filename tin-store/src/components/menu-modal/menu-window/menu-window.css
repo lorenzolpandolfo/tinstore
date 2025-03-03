@@ -15,6 +15,7 @@
     width: 100%;
     height: 100%;
     position: fixed;
+    animation: fadeIn 0.15s ease-in-out forwards;
 }
 
 .menu-window {
@@ -75,5 +76,26 @@
 
     .description {
         font-size: 16px;
+    }
+
+    animation: fadeIn 0.15s ease-in-out forwards,
+    scaleIn 0.1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+    opacity: 0;
+    }
+    to {
+    opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+    scale: 0.8;
+    }
+    to {
+    scale: 1;
     }
 }

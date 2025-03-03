@@ -65,7 +65,11 @@ export default function AppPackage({
       <div className="app-package-top">
         <div className="app-package-title">
           {packageUrl ? (
-            <a href={packageUrl} target="_blank" className="app-package-title">
+            <a href={packageUrl}
+              target="_blank"
+              className="app-package-title"
+              title={`Visit the ${packageName} website`}
+            >
               {fmt_packageName}
             </a>
           ) : (
@@ -94,6 +98,7 @@ export default function AppPackage({
               href={publisherUrl}
               target="_blank"
               className="app-package-publisher"
+              title={`Visit the ${publisher} website`}
             >
               {fmt_publisher}
             </a>
