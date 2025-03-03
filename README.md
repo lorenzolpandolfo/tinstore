@@ -1,6 +1,8 @@
 
 <p align="center">
-   <img src="./tin-store/public/assets/logo.svg" alt="" width="250"/>
+    <a href="https://github.com/lorenzolpandolfo/tinstore/releases">
+      <img src="./tin-store/public/assets/logo.svg" alt="" width="250"/>
+    </a>
 </p>
 <p align="center">
     <a href="https://github.com/lorenzolpandolfo/tinstore/releases">
