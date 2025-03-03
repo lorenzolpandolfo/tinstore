@@ -1,14 +1,20 @@
-# Tin Store
-Discover a new way to install applications on Windows.
 
-### Download
-[Download now](https://github.com/lorenzolpandolfo/tinstore/releases) the latest release.
+<p align="center">
+   <img src="./tin-store/public/assets/logo.svg" alt="" width="250"/>
+</p>
+<p align="center">
+    <a href="https://github.com/lorenzolpandolfo/tinstore/releases">
+      <img src="./tin-store/public/assets/downloadBtn.svg" alt="Download" width="150"/>
+    </a>
+</p>.
 
-### What is it?
+# Tin Store  
+### The smarter way to install and manage apps on Windows  
 
-**TinStore** is an intuitive, easy-to-use app store for **Windows** that allows you to discover, install, and manage your favorite applications in one place. With TinStore, you can effortlessly install apps using Winget's package system and keep them updated with just a few clicks. It’s your one-stop-shop for all things apps on Windows.
+**TinStore** is an intuitive and easy-to-use app store for **Windows**, allowing you to discover, install, and manage applications effortlessly. Powered by **Winget**, TinStore simplifies app installations and updates, making it your one-stop solution for Windows software management.
 
-### How it works?
+
+## How it works?
 
 TinStore works by integrating with **Winget**, the Windows package manager, to allow you to search, install, and update apps directly from the app. It simplifies the process of installing software on Windows, giving users an easy-to-navigate interface for managing their apps without needing to worry about different installers or versions.
 
@@ -17,7 +23,7 @@ Key features:
 - Install apps with just a few clicks
 - Simple, clean, and modern interface
 
-### Building from source
+## Building from source
 The process below is only necessary if you're a developer and would like to build it from source. Otherwise, just download it from the releases page.
    ```bash
    git clone https://github.com/lorenzolpandolfo/tinstore.git
