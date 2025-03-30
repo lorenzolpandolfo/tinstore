@@ -27,7 +27,7 @@ export const SearchContextProvider = ({ children }) => {
       const searchResults = await handlePackageSearch(packageName);
 
       if (!searchResults || searchResults.length === 0) {
-        console.log("No results found");
+        console.log("[Search] No results found");
         setLocalResults([]);
         setFinalResults([]);
         return;
@@ -35,7 +35,7 @@ export const SearchContextProvider = ({ children }) => {
 
       setLocalResults(searchResults);
     } catch (err) {
-      console.error("Error during search:", err);
+      console.error("[Search] Error during search:", err);
       setError("Failed to fetch results");
     } finally {
       setLoading(false);
@@ -45,39 +45,36 @@ export const SearchContextProvider = ({ children }) => {
   const sortedResults = useMemo(() => {
     const lowerCasePackageName = search.toLowerCase();
 
-    return [...localResults]
-      .sort((a, b) => {
-        const aPackageName = a.packageName?.toLowerCase() || "";
-        const bPackageName = b.packageName?.toLowerCase() || "";
+    return [...localResults].sort((a, b) => {
+      const aPackageName = a.packageName?.toLowerCase() || "";
+      const bPackageName = b.packageName?.toLowerCase() || "";
 
-        const aMatches = aPackageName.includes(lowerCasePackageName);
-        const bMatches = bPackageName.includes(lowerCasePackageName);
+      const aMatches = aPackageName.includes(lowerCasePackageName);
+      const bMatches = bPackageName.includes(lowerCasePackageName);
 
-        const aHasAllFields = a.description && a.publisher;
-        const bHasAllFields = b.description && b.publisher;
+      const aHasAllFields = a.description && a.publisher;
+      const bHasAllFields = b.description && b.publisher;
 
-        if (
-          aPackageName === lowerCasePackageName &&
-          bPackageName !== lowerCasePackageName
-        )
-          return -1;
-        if (
-          bPackageName === lowerCasePackageName &&
-          aPackageName !== lowerCasePackageName
-        )
-          return 1;
-        if (aMatches !== bMatches) return aMatches ? -1 : 1;
-        if (aHasAllFields !== bHasAllFields) return aHasAllFields ? -1 : 1;
+      if (
+        aPackageName === lowerCasePackageName &&
+        bPackageName !== lowerCasePackageName
+      )
+        return -1;
+      if (
+        bPackageName === lowerCasePackageName &&
+        aPackageName !== lowerCasePackageName
+      )
+        return 1;
+      if (aMatches !== bMatches) return aMatches ? -1 : 1;
+      if (aHasAllFields !== bHasAllFields) return aHasAllFields ? -1 : 1;
 
-        return 0;
-      });
+      return 0;
+    });
   }, [localResults]);
 
   const isProcessing = (result) => {
-    return processing.some(
-      (pkg) => pkg === result.packageName
-    )
-  }
+    return processing.some((pkg) => pkg === result.packageName);
+  };
 
   useEffect(() => {
     const createPackageComponents = async () => {

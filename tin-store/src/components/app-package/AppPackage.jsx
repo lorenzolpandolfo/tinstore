@@ -3,8 +3,9 @@ import "../app-package/app-package.css";
 const MESSAGE_NO_INFORMATION = "No information";
 const MESSAGE_NO_PUBLISHER = "Unknown publisher";
 const MESSAGE_NO_DESCRIPTION = "No description provided.";
-
 const HINT_NO_EXTERNAL_REFERENCE = "No external reference";
+const INSTALL_PREFIX = "winget install ";
+const UNINSTALL_PREFIX = "winget uninstall ";
 
 export default function AppPackage({
   packageName,
@@ -24,7 +25,7 @@ export default function AppPackage({
 
   const handlePackageInstall = async () => {
     alert(packageName + " will be installed.");
-    window.electron.runCommand("winget install " + packageId, {
+    window.electron.runCommand(INSTALL_PREFIX + packageId, {
       packageId,
       packageName,
     });
@@ -32,7 +33,7 @@ export default function AppPackage({
 
   const handlePackageUninstall = async () => {
     alert(packageName + " will be uninstalled.");
-    window.electron.runCommand("winget uninstall " + packageId, {
+    window.electron.runCommand(UNINSTALL_PREFIX + packageId, {
       packageId,
       packageName,
     });
@@ -65,7 +66,8 @@ export default function AppPackage({
       <div className="app-package-top">
         <div className="app-package-title">
           {packageUrl ? (
-            <a href={packageUrl}
+            <a
+              href={packageUrl}
               target="_blank"
               className="app-package-title"
               title={`Visit the ${packageName} website`}

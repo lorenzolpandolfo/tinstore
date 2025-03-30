@@ -28,10 +28,13 @@ const createSuccessProcessResponse = (installed, wasDesynced) => {
   dialog.showMessageBox({
     type: "info",
     title: "Process complete",
-    message: `The ${installed ? "installation" : "uninstallation"} process was successful.`
-      + (wasDesynced ? "\nThe cache is being updated." : ""),
-  })
-}
+    message:
+      `The ${
+        installed ? "installation" : "uninstallation"
+      } process was successful.` +
+      (wasDesynced ? "\nThe cache is being updated." : ""),
+  });
+};
 
 export const registerHandlers = (win) => {
   ipcMain.on("cache-generate-process", () => {
@@ -49,7 +52,7 @@ export const registerHandlers = (win) => {
   ipcMain.handle("check-packages-in-cache", async (event, packages) => {
     const jsonData = await getInMemoryCacheData();
     if (!jsonData) return;
-    console.log("[check-packages-in-cache] Finding packages in cache");
+    console.log("[Check-packages-in-cache] Finding packages in cache...");
 
     try {
       const results = await Promise.all(
@@ -88,7 +91,7 @@ export const registerHandlers = (win) => {
 
         if (desyncedCache) {
           await regenerateCache(win);
-          createSuccessProcessResponse(installing, true)
+          createSuccessProcessResponse(installing, true);
           return;
         }
 
@@ -100,7 +103,7 @@ export const registerHandlers = (win) => {
         return;
       }
 
-      createSuccessProcessResponse(installing, false)
+      createSuccessProcessResponse(installing, false);
 
       installing ? await addPackage(pkg) : await removePackage(pkg);
 

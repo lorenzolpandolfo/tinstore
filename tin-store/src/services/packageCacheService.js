@@ -71,21 +71,18 @@ export const removePackage = async (pkg) => {
 
   const packages = jsonData.Sources[0].Packages;
 
-  // Encontra o índice do pacote para remover
   const packageIndex = packages.findIndex(
     (pkg) => pkg.PackageIdentifier === packageId
   );
   if (packageIndex === -1) {
-    console.log(`[Warn] Pacote '${packageId}' nao encontrado no cache.`);
+    console.log(`[Warn] Package '${packageId}' not found on cache.`);
     return false;
   }
 
-  // Remove o pacote
   packages.splice(packageIndex, 1);
 
-  // Escreve o JSON atualizado no arquivo
   await writeCacheData(jsonData);
-  console.log(`[Info] Pacote '${packageId}' removido do cache.`);
+  console.log(`[Info] Package '${packageId}' removed from cache.`);
   await updateCacheData();
   return true;
 };
@@ -95,7 +92,6 @@ export const handleCache = async (win) => {
     createCache(win);
   } else {
     await updateCacheData();
-    // win.webContents.send("cache-generate-modal", true);
   }
 };
 
@@ -106,7 +102,7 @@ export const hasCache = () => {
 const execPromise = util.promisify(exec);
 
 export const createCache = async (win) => {
-  console.log("criando cache");
+  console.log("[Cache] Creating cache...");
   try {
     win.webContents.send("cache-generate-modal", true);
 
@@ -131,7 +127,7 @@ export const createCache = async (win) => {
       message: error.message,
     });
   } finally {
-    console.log("[Cache] Trying to loading just generated cache");
+    console.log("[Cache] Loading generated cache...");
     await updateCacheData();
     win.webContents.send("cache-generate-modal", false);
   }
@@ -140,12 +136,10 @@ export const createCache = async (win) => {
 export const regenerateCache = async (win) => {
   try {
     await fs.promises.access(CACHE_FILE_PATH).catch(() => null);
-    await fs.promises.unlink(CACHE_FILE_PATH).catch(() => { });
-    console.log(
-      `[Rebuild Cache] Arquivo de cache removido: ${CACHE_FILE_PATH}`
-    );
+    await fs.promises.unlink(CACHE_FILE_PATH).catch(() => {});
+    console.log(`[Rebuild Cache] Cache file removed: ${CACHE_FILE_PATH}`);
   } catch (err) {
-    console.log("[Rebuild Cache] Erro ao tentar remover o cache:", err);
+    console.log("[Rebuild Cache] Error on removing cache file:", err);
   } finally {
     handleCache(win);
   }

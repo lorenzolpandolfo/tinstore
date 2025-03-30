@@ -7,7 +7,7 @@
   "author": "Lorenzo Pandolfo",
   "main": "dist-electron/main.js",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite & electron .",
     "build": "vite build && electron-builder",
     "lint": "eslint .",
     "preview": "vite preview",

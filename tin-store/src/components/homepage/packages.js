@@ -162,9 +162,9 @@ export const packages = [
     category: "games",
   },
   {
-    packageName: "EA app",
+    packageName: "Hydra",
     packageDescription:
-      "Play great PC games and connect with your friends, all in one place.",
+      "A game launcher with its own embedded BitTorrent client.",
     category: "games",
   },
   {
