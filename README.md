@@ -39,4 +39,6 @@ The process below is only necessary if you're a developer and would like to buil
 
 All data used by **Tin Store** is public and directly extracted from this repository. **The developers of the applications displayed on Tin Store retain ownership of their respective applications and logos**. We are not impersonating them nor suggesting any type of partnership.
 
-For more information about the usage of these packages, please refer to the respective licenses of each application.
+The use of these applications is subject to the respective licenses of each application. For more information on the usage of these packages, please refer to the individual licenses of each application.
+
+If your app is listed on the homepage and you disagree with this, please open an issue so it can be removed.

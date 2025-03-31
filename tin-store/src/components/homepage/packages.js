@@ -1,17 +1,18 @@
 export const packages = [
+  // Development
   {
     packageName: "Vscodium",
     packageDescription: "Free/Libre Open Source Software Binaries of VS Code",
     category: "development",
   },
   {
-    packageName: "IntelliJ",
-    packageDescription: "The Leading Java and Kotlin IDE",
+    packageName: "Neovim",
+    packageDescription: "Hyperextensible Vim-based text editor",
     category: "development",
   },
   {
-    packageName: "Pycharm",
-    packageDescription: "The Python IDE for Professional Developers",
+    packageName: "Pycharm Community",
+    packageDescription: "The open-source version of PyCharm IDE",
     category: "development",
   },
   {
@@ -20,63 +21,36 @@ export const packages = [
     category: "development",
   },
   {
-    packageName: "Docker",
+    packageName: "Docker CLI",
     packageDescription: "Accelerate how you build, share, and run applications",
     category: "development",
   },
   {
-    packageName: "Postman",
-    packageDescription: "The Collaboration Platform for API Development",
-    category: "development",
-  },
-  {
-    packageName: "Studio 3T",
-    packageDescription: "The Ultimate GUI for MongoDB",
-    category: "development",
-  },
-  {
-    packageName: "Another",
+    packageName: "Git",
     packageDescription:
-      "A faster, better and more stable Redis desktop manager.",
+      "Free and open-source distributed version control system",
     category: "development",
   },
+
+  // Internet
   {
-    packageName: "Sublime Text",
-    packageDescription: "Text Editing, Done Right",
-    category: "development",
-  },
-  {
-    packageName: "Google Chrome",
-    packageDescription: "A fast, secure, and widely used web browser by Google",
+    packageName: "Qutebrowser",
+    packageDescription: "A keyboard-driven, vim-like browser based on PyQt5.",
     category: "internet",
   },
   {
-    packageName: "Firefox",
-    packageDescription: "A free and open-source web browser focused on privacy",
+    packageName: "LibreWolf",
+    packageDescription: "A privacy-focused web browser.",
     category: "internet",
   },
   {
-    packageName: "Opera",
+    packageName: "Falkon",
     packageDescription:
-      "A feature-rich web browser with a built-in VPN and ad blocker",
+      "Falkon is a KDE web browser previously known as QupZilla.",
     category: "internet",
   },
-  {
-    packageName: "Brave",
-    packageDescription: "A privacy-focused browser with built-in ad blocking",
-    category: "internet",
-  },
-  {
-    packageName: "Opera GX",
-    packageDescription:
-      "A gaming-focused browser with resource management tools",
-    category: "internet",
-  },
-  {
-    packageName: "Vivaldi",
-    packageDescription: "A highly customizable web browser for power users",
-    category: "internet",
-  },
+
+  // Work
   {
     packageName: "LibreOffice",
     packageDescription: "A free and open-source office suite for productivity",
@@ -88,31 +62,28 @@ export const packages = [
     category: "work",
   },
   {
-    packageName: "Slack",
-    packageDescription: "A messaging app for teams and workplace collaboration",
+    packageName: "Mattermost",
+    packageDescription: "An open-source workplace messaging solution",
     category: "work",
   },
   {
-    packageName: "Teams",
-    packageDescription: "Microsoft's communication and collaboration platform",
+    packageName: "Jitsi Meet",
+    packageDescription: "Secure open-source video conferencing",
     category: "work",
   },
   {
-    packageName: "Notion",
+    packageName: "Joplin",
+    packageDescription: "An open-source note-taking and to-do application",
+    category: "work",
+  },
+  {
+    packageName: "OnlyOffice",
     packageDescription:
-      "An all-in-one workspace for notes, tasks, and collaboration",
+      "Free and open-source office suite with cloud functionality",
     category: "work",
   },
-  {
-    packageName: "Obsidian",
-    packageDescription: "A powerful knowledge base and markdown editor",
-    category: "work",
-  },
-  {
-    packageName: "QBittorrent",
-    packageDescription: "A free and open-source BitTorrent client",
-    category: "utils",
-  },
+
+  // Utils
   {
     packageName: "VLC",
     packageDescription:
@@ -125,15 +96,13 @@ export const packages = [
     category: "utils",
   },
   {
-    packageName: "WinRAR",
-    packageDescription:
-      "Compress, Encrypt, Package and Backup with only one utility",
+    packageName: "PeaZip",
+    packageDescription: "A free and open-source file archiver",
     category: "utils",
   },
   {
     packageName: "Ventoy",
-    packageDescription:
-      "Ventoy is an open source tool to create bootable USB drive.",
+    packageDescription: "An open-source tool to create bootable USB drives.",
     category: "utils",
   },
   {
@@ -142,23 +111,16 @@ export const packages = [
       "Share files to nearby devices. Free, open source, cross-platform.",
     category: "utils",
   },
+  {
+    packageName: "KeePassXC",
+    packageDescription: "An open-source password manager",
+    category: "utils",
+  },
 
   // Games
   {
-    packageName: "Minecraft Launcher",
-    packageDescription:
-      "The official launcher for Minecraft, supporting Java and Bedrock editions.",
-    category: "games",
-  },
-  {
-    packageName: "Roblox",
-    packageDescription: "A platform for user-generated games and experiences.",
-    category: "games",
-  },
-  {
-    packageName: "Valve Steam",
-    packageDescription:
-      "A a digital distribution platform by Valve, offering games, software, and community features.",
+    packageName: "Prism Launcher",
+    packageDescription: "An open-source Minecraft launcher with mod support.",
     category: "games",
   },
   {
@@ -168,29 +130,17 @@ export const packages = [
     category: "games",
   },
   {
-    packageName: "Heroic",
+    packageName: "SuperTuxKart",
     packageDescription:
-      "Heroic is an Open Source Game Launcher for Linux, Windows and MacOS.",
-    category: "games",
-  },
-  {
-    packageName: "Epic Games Launcher",
-    packageDescription:
-      "Epic Games Launcher for the Epic Games Store and Unreal Engine.",
+      "Arcade 3D racer with a variety of characters, tracks and modes.",
     category: "games",
   },
 
   // Music and Video
   {
-    packageName: "Spotify",
+    packageName: "Spotube",
     packageDescription:
-      "A digital music streaming service with millions of tracks.",
-    category: "music and video",
-  },
-  {
-    packageName: "VLC",
-    packageDescription:
-      "A free and open-source media player supporting various formats.",
+      "Spotube is a Flutter based lightweight Spotify client.",
     category: "music and video",
   },
   {
@@ -210,9 +160,15 @@ export const packages = [
     category: "music and video",
   },
   {
-    packageName: "Kodi",
+    packageName: "Blender",
     packageDescription:
-      "A a free and feature-rich media center for various operating systems.",
+      "Blender is the free and open source 3D creation suite.",
+    category: "music and video",
+  },
+  {
+    packageName: "FFmpeg",
+    packageDescription:
+      "A free, open-source framework for handling multimedia data.",
     category: "music and video",
   },
 ];
