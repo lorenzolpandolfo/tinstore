@@ -22,7 +22,8 @@ export const packages = [
   },
   {
     packageName: "Docker CLI",
-    packageDescription: "Accelerate how you build, share, and run applications",
+    packageDescription:
+      "An open platform for developing, shipping, and running applications",
     category: "development",
   },
   {
@@ -35,18 +36,18 @@ export const packages = [
   // Internet
   {
     packageName: "Qutebrowser",
-    packageDescription: "A keyboard-driven, vim-like browser based on PyQt5.",
+    packageDescription: "A keyboard-driven, vim-like browser based on PyQt5",
     category: "internet",
   },
   {
     packageName: "LibreWolf",
-    packageDescription: "A privacy-focused web browser.",
+    packageDescription: "A privacy-focused web browser",
     category: "internet",
   },
   {
     packageName: "Falkon",
     packageDescription:
-      "Falkon is a KDE web browser previously known as QupZilla.",
+      "Falkon is a KDE web browser previously known as QupZilla",
     category: "internet",
   },
 
@@ -87,7 +88,7 @@ export const packages = [
   {
     packageName: "VLC",
     packageDescription:
-      "A free and open-source media player supporting various formats.",
+      "A free and open-source media player supporting various formats",
     category: "utils",
   },
   {
@@ -102,13 +103,13 @@ export const packages = [
   },
   {
     packageName: "Ventoy",
-    packageDescription: "An open-source tool to create bootable USB drives.",
+    packageDescription: "An open-source tool to create bootable USB drives",
     category: "utils",
   },
   {
     packageName: "LocalSend",
     packageDescription:
-      "Share files to nearby devices. Free, open source, cross-platform.",
+      "Share files to nearby devices. Free, open source, cross-platform",
     category: "utils",
   },
   {
@@ -120,55 +121,53 @@ export const packages = [
   // Games
   {
     packageName: "Prism Launcher",
-    packageDescription: "An open-source Minecraft launcher with mod support.",
+    packageDescription: "An open-source Minecraft launcher with mod support",
     category: "games",
   },
   {
     packageName: "Hydra",
     packageDescription:
-      "A game launcher with its own embedded BitTorrent client.",
+      "A game launcher with its own embedded BitTorrent client",
     category: "games",
   },
   {
     packageName: "SuperTuxKart",
     packageDescription:
-      "Arcade 3D racer with a variety of characters, tracks and modes.",
+      "Arcade 3D racer with a variety of characters, tracks and modes",
     category: "games",
   },
 
   // Music and Video
   {
     packageName: "Spotube",
-    packageDescription:
-      "Spotube is a Flutter based lightweight Spotify client.",
+    packageDescription: "Spotube is a Flutter based lightweight Spotify client",
     category: "music and video",
   },
   {
     packageName: "Audacity",
-    packageDescription: "A free, open-source audio editing software.",
+    packageDescription: "A free, open-source audio editing software",
     category: "music and video",
   },
   {
     packageName: "OBS Studio",
     packageDescription:
-      "Open-source software for video recording and live streaming.",
+      "Open-source software for video recording and live streaming",
     category: "music and video",
   },
   {
     packageName: "Kdenlive",
-    packageDescription: "A free and open-source video editing software.",
+    packageDescription: "A free and open-source video editing software",
     category: "music and video",
   },
   {
     packageName: "Blender",
-    packageDescription:
-      "Blender is the free and open source 3D creation suite.",
+    packageDescription: "Blender is the free and open source 3D creation suite",
     category: "music and video",
   },
   {
     packageName: "FFmpeg",
     packageDescription:
-      "A free, open-source framework for handling multimedia data.",
+      "A free, open-source framework for handling multimedia data",
     category: "music and video",
   },
 ];
