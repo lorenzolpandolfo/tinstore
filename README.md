@@ -13,7 +13,7 @@
 # Tin Store  
 ### The smarter way to install and manage apps on Windows  
 
-**TinStore** is an intuitive and easy-to-use app store for **Windows**, allowing you to discover, install, and manage applications effortlessly. Powered by **Winget**, TinStore simplifies app installations and updates, making it your one-stop solution for Windows software management.
+**Tin Store** is an intuitive and easy-to-use app store for **Windows**, allowing you to discover, install, and manage applications effortlessly. Powered by **Winget**, TinStore simplifies app installations and updates, making it your one-stop solution for Windows software management.
 
 
 ## How it works?
@@ -33,3 +33,10 @@ The process below is only necessary if you're a developer and would like to buil
    npm install
    npm run build
    ```
+
+## Disclaimer
+**Tin Store** is not affiliated, partnered, or associated with any brand or developer of the applications displayed or managed within the project. The project only displays public data from packages available on **Winget** (Windows package manager), sourced from the official Winget package repository: [Winget-Pkgs](https://github.com/microsoft/winget-pkgs), which is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+All data used by **Tin Store** is public and directly extracted from this repository. **The developers of the applications displayed on Tin Store retain ownership of their respective applications and logos**. We are not impersonating them nor suggesting any type of partnership.
+
+For more information about the usage of these packages, please refer to the respective licenses of each application.
