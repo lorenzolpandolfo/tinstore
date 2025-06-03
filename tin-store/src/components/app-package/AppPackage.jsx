@@ -4,8 +4,18 @@ const MESSAGE_NO_INFORMATION = "No information";
 const MESSAGE_NO_PUBLISHER = "Unknown publisher";
 const MESSAGE_NO_DESCRIPTION = "No description provided.";
 const HINT_NO_EXTERNAL_REFERENCE = "No external reference";
-const INSTALL_PREFIX = "winget install ";
-const UNINSTALL_PREFIX = "winget uninstall ";
+const DEFAULT_FLAGS = " --silent --accept-source-agreements --disable-interactivity"
+const INSTALL_PREFIX = "winget install --id ";
+const INSTALL_SUFIX = " --accept-package-agreements";
+const UNINSTALL_PREFIX = "winget uninstall --id ";
+
+const createInstallCmd = (packageId) => {
+  return INSTALL_PREFIX + packageId + DEFAULT_FLAGS + INSTALL_SUFIX
+}
+
+const createUninstallCmd = (packageId) => {
+  return UNINSTALL_PREFIX + packageId + DEFAULT_FLAGS
+}
 
 export default function AppPackage({
   packageName,
@@ -25,7 +35,7 @@ export default function AppPackage({
 
   const handlePackageInstall = async () => {
     alert(packageName + " will be installed.");
-    window.electron.runCommand(INSTALL_PREFIX + packageId, {
+    window.electron.runCommand(createInstallCmd(packageId), {
       packageId,
       packageName,
     });
@@ -33,7 +43,7 @@ export default function AppPackage({
 
   const handlePackageUninstall = async () => {
     alert(packageName + " will be uninstalled.");
-    window.electron.runCommand(UNINSTALL_PREFIX + packageId, {
+    window.electron.runCommand(createUninstallCmd(packageId), {
       packageId,
       packageName,
     });

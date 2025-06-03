@@ -2,8 +2,8 @@
   "name": "tin-store",
   "private": true,
   "type": "module",
-  "version": "1.0.0",
-  "description": "Tinstore is a Microsoft Winget GUI made with Electron and React.",
+  "version": "1.0.2",
+  "description": "Tin Store",
   "author": "Lorenzo Pandolfo",
   "main": "dist-electron/main.js",
   "scripts": {
