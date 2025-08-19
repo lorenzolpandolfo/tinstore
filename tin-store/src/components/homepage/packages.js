@@ -45,7 +45,7 @@ export const packages = [
     packageName: "Google Chrome",
     packageDescription: "Fast and safe by Google",
     category: "internet",
-    website: "https://www.google.com/chrome/",
+    website: "https://chromedriver.chromium.org",
   },
   {
     packageName: "Mozilla Firefox",
