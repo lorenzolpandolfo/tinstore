@@ -13,12 +13,12 @@
 # Tin Store  
 ### The smarter way to install and manage apps on Windows  
 
-**Tin Store** is an intuitive and easy-to-use app store for **Windows**, allowing you to discover, install, and manage applications effortlessly. Powered by **Winget**, TinStore simplifies app installations and updates, making it your one-stop solution for Windows software management.
+**Tin Store** is an intuitive and easy-to-use app store for **Windows**, allowing you to discover, install, and manage applications effortlessly. Powered by **Winget**, Tin Store simplifies app installations and updates, making it your one-stop solution for Windows software management.
 
 
 ## How it works?
 
-TinStore works by integrating with **Winget**, the Windows package manager, to allow you to search, install, and update apps directly from the app. It simplifies the process of installing software on Windows, giving users an easy-to-navigate interface for managing their apps without needing to worry about different installers or versions.
+Tin Store works by integrating with **Winget**, the Windows package manager, to allow you to search, install, and update apps directly from the app. It simplifies the process of installing software on Windows, giving users an easy-to-navigate interface for managing their apps without needing to worry about different installers or versions.
 
 Key features:
 - Browse and discover applications available on Winget
