@@ -1,66 +1,84 @@
-
 .pkg-card {
-    background-color: var(--secondary-background-color);
-    margin: 2px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 200px;
-    min-height: 100px;
-    padding: 10px;
+  background-color: var(--secondary-background-color);
+  margin: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  min-height: 100px;
+  padding: 10px;
+  border-radius: 10px;
+
+  img {
     border-radius: 10px;
+    margin: 7px;
+  }
 
-    .title {
-        font-size: 18px;
-        font-weight: 600;
-    }
-
-    .description {
-        font-size: 14px;
-        font-weight: 500;
-        text-align: center;
-    }
+  .pkg-title {
+    font-size: 18px;
+  }
 }
 
 .category-button {
-    margin: 2px;
-    align-items: center;
-    justify-content: center;
-    width: 200px;
-    height: 50px;
-    font-size: 16px;
+  margin: 2px;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 50px;
+  font-size: 16px;
 }
 
 section {
-    margin-bottom: 30px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  margin-bottom: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    .title {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 15px;
-    }
+  .title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
 }
 
 .packages-list {
-    display: flex;
-    max-width: 700px;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  max-width: 700px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .gradient {
-    background: linear-gradient(135deg, var(--start-color), var(--end-color));
-    background-size: 101% 101%;
+  background: linear-gradient(135deg, var(--start-color), var(--end-color));
+  background-size: 101% 101%;
 }
 
-.gradient-a { --start-color: var(--gradient-a-start); --end-color: var(--gradient-a-end); }
-.gradient-b { --start-color: var(--gradient-b-start); --end-color: var(--gradient-b-end); }
-.gradient-c { --start-color: var(--gradient-c-start); --end-color: var(--gradient-c-end); }
-.gradient-d { --start-color: var(--gradient-d-start); --end-color: var(--gradient-d-end); }
-.gradient-e { --start-color: var(--gradient-e-start); --end-color: var(--gradient-e-end); }
-.gradient-f { --start-color: var(--gradient-f-start); --end-color: var(--gradient-f-end); }
+.pkg-card-icon {
+  height: 60px;
+}
+
+.gradient-a {
+  --start-color: var(--gradient-a-start);
+  --end-color: var(--gradient-a-end);
+}
+.gradient-b {
+  --start-color: var(--gradient-b-start);
+  --end-color: var(--gradient-b-end);
+}
+.gradient-c {
+  --start-color: var(--gradient-c-start);
+  --end-color: var(--gradient-c-end);
+}
+.gradient-d {
+  --start-color: var(--gradient-d-start);
+  --end-color: var(--gradient-d-end);
+}
+.gradient-e {
+  --start-color: var(--gradient-e-start);
+  --end-color: var(--gradient-e-end);
+}
+.gradient-f {
+  --start-color: var(--gradient-f-start);
+  --end-color: var(--gradient-f-end);
+}

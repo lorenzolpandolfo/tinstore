@@ -1,14 +1,12 @@
 import { useContextSearch } from "../../../contexts/SearchContext";
 import "./pkg-card.css";
 
-const handleScrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-};
-
-export default function PkgCard({ packageName, packageDescription }) {
+export default function PkgCard({
+  alias,
+  packageName,
+  packageDescription,
+  packageUrl,
+}) {
   const { handleSearch } = useContextSearch();
 
   const handleSearchIn = () => {
@@ -16,9 +14,16 @@ export default function PkgCard({ packageName, packageDescription }) {
   };
 
   return (
-    <div onClick={() => handleSearchIn()} className="pkg-card button">
-      <span className="title">{packageName}</span>
-      <span className="description">{packageDescription}</span>
+    <div
+      onClick={() => handleSearchIn()}
+      className="pkg-card button"
+      title={packageDescription}
+    >
+      <img
+        className="pkg-card-icon"
+        src={`https://www.google.com/s2/favicons?sz=64&domain=${packageUrl}`}
+      />
+      <span className="pkg-title">{alias || packageName}</span>
     </div>
   );
 }

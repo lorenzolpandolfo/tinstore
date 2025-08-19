@@ -43,34 +43,38 @@ export const SearchContextProvider = ({ children }) => {
   };
 
   const sortedResults = useMemo(() => {
-    const lowerCasePackageName = search.toLowerCase();
+    const lowerCaseSearch = search.toLowerCase();
+
+    if (!lowerCaseSearch) return localResults;
 
     return [...localResults].sort((a, b) => {
       const aPackageName = a.packageName?.toLowerCase() || "";
       const bPackageName = b.packageName?.toLowerCase() || "";
 
-      const aMatches = aPackageName.includes(lowerCasePackageName);
-      const bMatches = bPackageName.includes(lowerCasePackageName);
+      const getRelevanceScore = (packageName) => {
+        if (packageName === lowerCaseSearch) return 4;
+        if (packageName.startsWith(lowerCaseSearch)) return 3;
+        if (lowerCaseSearch.startsWith(packageName)) return 2;
+        if (packageName.includes(lowerCaseSearch)) return 1;
+        return 0;
+      };
 
-      const aHasAllFields = a.description && a.publisher;
-      const bHasAllFields = b.description && b.publisher;
+      const aScore = getRelevanceScore(aPackageName);
+      const bScore = getRelevanceScore(bPackageName);
 
-      if (
-        aPackageName === lowerCasePackageName &&
-        bPackageName !== lowerCasePackageName
-      )
-        return -1;
-      if (
-        bPackageName === lowerCasePackageName &&
-        aPackageName !== lowerCasePackageName
-      )
-        return 1;
-      if (aMatches !== bMatches) return aMatches ? -1 : 1;
-      if (aHasAllFields !== bHasAllFields) return aHasAllFields ? -1 : 1;
+      if (aScore !== bScore) {
+        return bScore - aScore;
+      }
 
-      return 0;
+      const aHasAllFields = !!(a.description && a.publisher);
+      const bHasAllFields = !!(b.description && b.publisher);
+      if (aHasAllFields !== bHasAllFields) {
+        return aHasAllFields ? -1 : 1;
+      }
+
+      return aPackageName.localeCompare(bPackageName);
     });
-  }, [localResults]);
+  }, [localResults, search]);
 
   const isProcessing = (result) => {
     return processing.some((pkg) => pkg === result.packageName);

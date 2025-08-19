@@ -1,19 +1,18 @@
-
 .app-package {
-    padding: 15px;
-    margin: 2.5px 15px;
-    border-radius: 10px;
+  padding: 15px;
+  margin: 2.5px 15px;
+  border-radius: 10px;
 
-    width: 600px;
-    min-height: 100px;
-  
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-  
-    background-color: var(--secondary-background-color);
-    animation: fadeIn 0.15s ease-in-out forwards;
-  }
+  width: 600px;
+  min-height: 100px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+
+  background-color: var(--secondary-background-color);
+  animation: fadeIn 0.15s ease-in-out forwards;
+}
 
 @keyframes fadeIn {
   from {
@@ -24,15 +23,26 @@
   }
 }
 
-.app-package-publisher {
-    font-size: 15px;
-    color: var(--secondary-font-color);
+.app-package-content,
+.app-package-version {
+  cursor: default;
 }
+
+.app-package-publisher {
+  font-size: 15px;
+  color: var(--secondary-font-color);
+}
+
+.app-package-version {
+  font-size: 12px;
+  color: var(--secondary-font-color);
+}
+
 .app-package-title {
-    font-weight: 600;
-    font-size: 20px;
-    color: var(--primary-font-color);
-    text-decoration: none;
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--primary-font-color);
+  text-decoration: none;
 }
 
 .app-package-top {
@@ -41,20 +51,13 @@
   align-items: center;
   justify-content: space-between;
 }
-  
+
 .app-package-details {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   width: 100%;
-  align-items:baseline;
-}
-
-.app-package-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  align-items: baseline;
 }
 
 .app-package:hover {
@@ -73,7 +76,6 @@
   transition: border-color 0.225s;
   transition: transform 0.225s ease-in-out;
   cursor: pointer;
-  
 }
 
 .button:hover {
@@ -88,7 +90,6 @@
 .app-package-uninstall {
   background-color: transparent;
   border: 2px solid var(--primary-button-color);
-
 }
 
 .app-package-installing {
@@ -107,6 +108,21 @@
   align-items: center;
   justify-content: end;
   width: 100%;
+}
+
+.app-package-icon {
+  height: 46px;
+  margin-right: 12px;
+  margin-bottom: 10px;
+}
+
+.app-package-basic-infos {
+  display: flex;
+  align-items: center;
+}
+
+.app-package-title-and-publisher {
+  margin-bottom: 10px;
 }
 
 .verified-app-check {

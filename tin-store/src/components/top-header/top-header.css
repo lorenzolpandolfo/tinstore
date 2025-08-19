@@ -1,33 +1,31 @@
-
 .top-header {
-    position:sticky;
-    top: 0;
+  position: sticky;
+  top: 0;
+  display: flex;
+  z-index: 1;
+
+  justify-content: center;
+  align-items: center;
+
+  button {
     display: flex;
-    z-index: 1;
-
-
-    justify-content: center;
+    background-color: transparent;
+    width: 100px;
     align-items: center;
+    justify-content: center;
+    margin: 5px 10px;
+  }
 
-    button {
-        display: flex;
-        background-color: transparent;
-        width: 100px;
-        align-items: center;
-        justify-content: center;
-        margin: 5px 10px;
-    }
-
-    .selected {
-        background-color: var(--tertiary-background-color);
-    }
+  .selected {
+    background-color: var(--tertiary-background-color);
+  }
 }
 
 .top-header-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--primary-background-color);
-    border-radius: 10px;
-    margin-top: 2.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-background-color);
+  border-radius: 10px;
+  margin-top: 2.5px;
 }

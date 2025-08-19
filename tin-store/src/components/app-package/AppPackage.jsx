@@ -64,56 +64,70 @@ export default function AppPackage({
   return (
     <div className="app-package">
       <div className="app-package-top">
-        <div className="app-package-title">
-          {packageUrl ? (
-            <a
-              href={packageUrl}
-              target="_blank"
-              className="app-package-title"
-              title={`Visit the ${packageName} website`}
-            >
-              {fmt_packageName}
-            </a>
-          ) : (
-            <span
-              title={HINT_NO_EXTERNAL_REFERENCE}
-              className="app-package-title"
-            >
-              {fmt_packageName}
-            </span>
-          )}
-          {isVerified && (
-            <img
-              title="Official source"
-              className="verified-app-check"
-              alt="verified app check"
-              src="assets/check.svg"
-            />
-          )}
+        <div className="app-package-basic-infos">
+          <img
+            className="app-package-icon"
+            src={
+              packageUrl
+                ? `https://www.google.com/s2/favicons?sz=64&domain=${packageUrl}`
+                : "assets/logo.svg"
+            }
+            alt="favicon"
+            draggable="false"
+          />
+          <div className="app-package-title-and-publisher">
+            <div className="app-package-title">
+              {packageUrl ? (
+                <a
+                  href={packageUrl}
+                  target="_blank"
+                  className="app-package-title"
+                  title={`Visit the ${packageName} website`}
+                >
+                  {fmt_packageName}
+                </a>
+              ) : (
+                <span
+                  title={HINT_NO_EXTERNAL_REFERENCE}
+                  className="app-package-title"
+                >
+                  {fmt_packageName}
+                </span>
+              )}
+              {isVerified && (
+                <img
+                  title="Official source"
+                  className="verified-app-check"
+                  alt="verified app check"
+                  src="assets/check.svg"
+                />
+              )}
+            </div>
+
+            <div className="app-package-publisher">
+              {publisherUrl ? (
+                <a
+                  href={publisherUrl}
+                  target="_blank"
+                  className="app-package-publisher"
+                  title={`Visit the ${publisher || packageName} website`}
+                >
+                  {fmt_publisher}
+                </a>
+              ) : (
+                <span
+                  title={HINT_NO_EXTERNAL_REFERENCE}
+                  className="app-package-publisher"
+                >
+                  {fmt_publisher}
+                </span>
+              )}
+            </div>
+          </div>
         </div>
-        <span className="app-package-publisher"> {fmt_version}</span>
       </div>
-      <div className="app-package-bottom">
-        <div className="app-package-details">
-          {publisherUrl ? (
-            <a
-              href={publisherUrl}
-              target="_blank"
-              className="app-package-publisher"
-              title={`Visit the ${publisher} website`}
-            >
-              {fmt_publisher}
-            </a>
-          ) : (
-            <span
-              title={HINT_NO_EXTERNAL_REFERENCE}
-              className="app-package-publisher"
-            >
-              {fmt_publisher}
-            </span>
-          )}
-          <span className="app-package-content">{fmt_description}</span>
-        </div>
+      <div className="app-package-details">
+        <span className="app-package-content">{fmt_description}</span>
       </div>
       <div className="app-buttons">
         {installed && !processing && (
@@ -139,6 +153,12 @@ export default function AppPackage({
           </span>
         )}
       </div>
+      <span
+        className="app-package-version"
+        title={`${packageName} version ${version}`}
+      >
+        {fmt_version}
+      </span>
     </div>
   );
 }

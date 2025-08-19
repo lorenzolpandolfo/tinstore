@@ -63,9 +63,11 @@ const App = () => {
 
       {contextSection === "installed" &&
         (installedPackages.length > 0 ? (
-          renderInstalledPackages()
+          <SearchBar /> && renderInstalledPackages()
         ) : (
-          <span>No packages found.</span>
+          <span>
+            No packages found. Rebuild cache in configuration and try again.
+          </span>
         ))}
 
       {contextSection === "explore" && (

@@ -47,8 +47,10 @@ export default function Homepage() {
                 .map((p) => (
                   <PkgCard
                     key={p.packageName}
+                    alias={p.alias}
                     packageName={p.packageName}
                     packageDescription={p.packageDescription}
+                    packageUrl={p.website}
                   />
                 ))}
           </div>
