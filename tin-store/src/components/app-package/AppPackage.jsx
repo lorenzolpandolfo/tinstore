@@ -4,18 +4,19 @@ const MESSAGE_NO_INFORMATION = "No information";
 const MESSAGE_NO_PUBLISHER = "Unknown publisher";
 const MESSAGE_NO_DESCRIPTION = "No description provided.";
 const HINT_NO_EXTERNAL_REFERENCE = "No external reference";
-const DEFAULT_FLAGS = " --silent --accept-source-agreements --disable-interactivity"
+const DEFAULT_FLAGS =
+  " --silent --accept-source-agreements --disable-interactivity";
 const INSTALL_PREFIX = "winget install --id ";
 const INSTALL_SUFIX = " --accept-package-agreements";
 const UNINSTALL_PREFIX = "winget uninstall --id ";
 
 const createInstallCmd = (packageId) => {
-  return INSTALL_PREFIX + packageId + DEFAULT_FLAGS + INSTALL_SUFIX
-}
+  return INSTALL_PREFIX + packageId + DEFAULT_FLAGS + INSTALL_SUFIX;
+};
 
 const createUninstallCmd = (packageId) => {
-  return UNINSTALL_PREFIX + packageId + DEFAULT_FLAGS
-}
+  return UNINSTALL_PREFIX + packageId + DEFAULT_FLAGS;
+};
 
 export default function AppPackage({
   packageName,
@@ -78,8 +79,10 @@ export default function AppPackage({
           <img
             className="app-package-icon"
             src={
-              packageUrl
-                ? `https://www.google.com/s2/favicons?sz=64&domain=${packageUrl}`
+              packageUrl || publisherUrl
+                ? `https://www.google.com/s2/favicons?sz=64&domain=${
+                    packageUrl || publisherUrl
+                  }`
                 : "assets/logo.svg"
             }
             alt="favicon"
