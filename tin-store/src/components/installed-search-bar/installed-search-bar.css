@@ -1,0 +1,27 @@
+.package-search-installed {
+  display: flex;
+  justify-content: center;
+
+  input {
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 20px;
+    border: 2px solid var(--primary-button-color);
+    background-color: var(--secondary-background-color);
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    height: 45px;
+    width: 600px;
+  }
+
+  input::placeholder {
+    color: rgba(255, 255, 255, 0.795);
+  }
+}
+
+.search {
+  button {
+    margin: 10px 0;
+  }
+}

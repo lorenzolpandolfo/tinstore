@@ -12,6 +12,7 @@ import { useProcessingContext } from "./contexts/ProcessingContext.jsx";
 import MenuModal from "./components/menu-modal/MenuModal.jsx";
 import { useContextSearch } from "./contexts/SearchContext.jsx";
 import LoadingModal from "./components/loading-modal/LoadingModal.jsx";
+import InstalledSearchBar from "./components/installed-search-bar/InstalledSearchBar.jsx";
 
 const formatPackageIdentifier = (pkgId) => {
   return pkgId.replaceAll(".", " ");
@@ -27,6 +28,8 @@ const App = () => {
   const { processing } = useProcessingContext();
   const { loading } = useContextSearch();
 
+  const [installedAppsFilter, setInstalledAppsFilter] = useState("");
+
   useEffect(() => {
     const fetchPackages = async () => {
       if (contextSection === "installed") {
@@ -39,23 +42,32 @@ const App = () => {
     fetchPackages();
   }, [contextSection]);
 
-  const renderInstalledPackages = () => {
-    return installedPackages.map((p) => (
-      <AppPackage
-        packageName={
-          p.packageName || formatPackageIdentifier(p.PackageIdentifier)
-        }
-        packageId={p.PackageIdentifier}
-        publisher={p.publisher}
-        version={p.version}
-        description={p.description}
-        publisherUrl={p.publisherUrl}
-        packageUrl={p.packageUrl}
-        processing={false}
-        installed={true}
-      />
-    ));
-  };
+  const renderInstalledPackages = () =>
+    installedPackages
+      .filter((p) => {
+        const packageName = p.PackageIdentifier?.toLowerCase();
+        return (
+          !installedAppsFilter ||
+          packageName.startsWith(installedAppsFilter) ||
+          packageName.includes(installedAppsFilter) ||
+          installedAppsFilter.includes(packageName)
+        );
+      })
+      .map((p) => (
+        <AppPackage
+          packageName={
+            p.packageName || formatPackageIdentifier(p.PackageIdentifier)
+          }
+          packageId={p.PackageIdentifier}
+          publisher={p.publisher}
+          version={p.version}
+          description={p.description}
+          publisherUrl={p.publisherUrl}
+          packageUrl={p.packageUrl}
+          processing={false}
+          installed={true}
+        />
+      ));
 
   return (
     <>
@@ -63,7 +75,13 @@ const App = () => {
 
       {contextSection === "installed" &&
         (installedPackages.length > 0 ? (
-          <SearchBar /> && renderInstalledPackages()
+          <>
+            <InstalledSearchBar
+              filter={installedAppsFilter}
+              setFilter={setInstalledAppsFilter}
+            />
+            {renderInstalledPackages()}
+          </>
         ) : (
           <span>
             No packages found. Rebuild cache in configuration and try again.
