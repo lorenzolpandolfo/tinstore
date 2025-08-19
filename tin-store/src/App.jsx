@@ -53,6 +53,11 @@ const App = () => {
           installedAppsFilter.includes(packageName)
         );
       })
+      .sort((a, b) =>
+        a.PackageIdentifier.localeCompare(b.PackageIdentifier, undefined, {
+          sensitivity: "base",
+        })
+      )
       .map((p) => (
         <AppPackage
           packageName={

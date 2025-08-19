@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import "./menu-window.css";
 import { useMenu } from "../../../contexts/MenuContext";
+import { BUILD_VERSION } from "../../../utils/constants";
 
-const DOCS_URL = "https://github.com/lorenzolpandolfo/tinstore/tree/main/tin-store/docs/help.md";
+const DOCS_URL =
+  "https://github.com/lorenzolpandolfo/tinstore/tree/main/tin-store/docs/help.md";
 
 export default function MenuWindow() {
   const [token, setToken] = useState("");
@@ -52,34 +54,32 @@ export default function MenuWindow() {
                 </button>
               </div>
               <span className="description">
-                The GitHub Personal Access Token is required to access the
-                Winget repository and retrieve package data. The key is used
-                locally only.
+                A GitHub Personal Access Token is required to access the Winget
+                repository and retrieve package data. This key is used locally
+                only.
               </span>
               <span className="description">
                 Don't have one yet?{" "}
-                <a
-                  href={DOCS_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={DOCS_URL} target="_blank" rel="noopener noreferrer">
                   Create your personal access token
                 </a>
-                .
               </span>
             </div>
             <div className="cache section">
               <span className="subtitle">Cache</span>
               <div className="label">
                 <span className="description">
-                  Manually recreate the cache to ensure the latest package data
-                  is available.
+                  Recreate the cache to ensure the latest package data is
+                  available.
                 </span>
                 <button className="button" onClick={handleRebuildCache}>
                   Rebuild
                 </button>
               </div>
             </div>
+          </div>
+          <div className="footer">
+            <span className="build-version">build {BUILD_VERSION}</span>
           </div>
         </div>
       </div>
