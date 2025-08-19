@@ -45,7 +45,10 @@ const App = () => {
   const renderInstalledPackages = () =>
     installedPackages
       .filter((p) => {
-        const packageName = p.PackageIdentifier?.toLowerCase();
+        const packageName = formatPackageIdentifier(p.PackageIdentifier)
+          .toLowerCase()
+          .trim();
+
         return (
           !installedAppsFilter ||
           packageName.startsWith(installedAppsFilter) ||
